@@ -1,11 +1,23 @@
 export function mapDepartureData(flight) {
     return {
-    //   airport: {
-    //     iata: flight.departure.airport.iata,
-    //     icao: flight.departure.airport.icao
-    //   },
-    //   date: flight.departure.date,
-    //   localTime: flight.departure.passengerLocalTime,
-    carrierCode: flight.carrierCode
+        carrierCodes: flight.carrierCode,
+        flightNumber: flight.flightNumber,
+        flightType: flight.flightType,
+        departure: flight.departure,
+        aircraftType: flight.aircraftType,
+        serviceTypeCode: flight.serviceTypeCode,
+        statusDetails: flight.statusDetails
     };
-  }
+}
+
+export function mapArrivalData(flight) {
+    return {
+        carrierCodes: flight.carrierCode,
+        flightNumber: flight.flightNumber,
+        flightType: flight.flightType,
+        departure: flight.departure,
+        aircraftType: flight.aircraftType,
+        serviceTypeCode: flight.serviceTypeCode,
+        statusDetails: flight.statusDetails
+    };
+}

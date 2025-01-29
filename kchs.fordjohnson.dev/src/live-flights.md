@@ -25,8 +25,11 @@ display(departureData);
 ```
 
 ```js
-import { mapDepartureData } from './flightSchema.js';
+import { mapDepartureData, mapArrivalData } from './flightSchema.js';
 
 const departures = departureData.data.map(flight => mapDepartureData(flight));
 display(departures);
+
+const arrivals = arrivalData.data.map(flight => mapArrivalData(flight));
+display(arrivals);
 ```
