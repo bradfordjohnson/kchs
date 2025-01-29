@@ -14,13 +14,19 @@ async function getData(url) {
     console.error(error.message);
   }
 }
-
-const arrivalData = await getData(API_CONFIG.arrivalUrl);
 const departureData = await getData(API_CONFIG.departureUrl);
+const arrivalData = await getData(API_CONFIG.arrivalUrl);
 ```
 
 ```js
 display(arrivalData);
 
 display(departureData);
+```
+
+```js
+import { mapDepartureData } from './flightSchema.js';
+
+const departures = departureData.data.map(flight => mapDepartureData(flight));
+display(departures);
 ```
