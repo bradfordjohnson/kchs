@@ -1,8 +1,10 @@
 export function mapDepartureData(flight) {
     return {
+        departureDate: flight.departure.date,
+        arrivalDate: flight.arrival.date,
         carrierCode: flight.carrierCode.icao,
         // carrierCodes: flight.carrierCode,
-        flightNumber: flight.flightNumber,
+        flightNumber: flight.carrierCode.icao + ' ' + flight.flightNumber,
         flightType: flight.flightType,
         // aircraftType: flight.aircraftType,
         // serviceTypeCode: flight.serviceTypeCode,
@@ -26,9 +28,11 @@ export function mapDepartureData(flight) {
 
 export function mapArrivalData(flight) {
     return {
+        departureDate: flight.departure.date,
+        arrivalDate: flight.arrival.date,
         carrierCode: flight.carrierCode.icao,
         // carrierCodes: flight.carrierCode,
-        flightNumber: flight.flightNumber,
+        flightNumber: flight.carrierCode.icao + ' ' + flight.flightNumber,
         flightType: flight.flightType,
         // aircraftType: flight.aircraftType,
         // serviceTypeCode: flight.serviceTypeCode,

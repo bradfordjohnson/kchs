@@ -10,8 +10,8 @@ export default {
     {
       name: "Flights",
       pages: [
-        {name: "Live Flights", path: "/live-flights"},
-        {name: "Flight History", path: "/flight-history"}    
+        {name: "Today's Flights", path: "/todays-flights"},
+        // {name: "Flight History", path: "/flight-history"}
       ]
     }
   ],
