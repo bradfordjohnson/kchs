@@ -190,7 +190,12 @@ def main(file_path, url):
     data = get_flight_data(url)
     extracted_data = extract_flight_data(data)
     load_data(file_path, get_est_timestamp(), extracted_data)
-    
-main("data/arrivals.json", "https://ccaafids.azurewebsites.net/api/FIDsTest?code=VnSepGuKSiEXD0zW_eOg73NkKKgyT_jDIZOm8pvuCbs8AzFuNZG1RA==&dir=arrival")
 
-main("data/departures.json", "https://ccaafids.azurewebsites.net/api/FIDsTest?code=VnSepGuKSiEXD0zW_eOg73NkKKgyT_jDIZOm8pvuCbs8AzFuNZG1RA==&dir=departure")
+
+arrivals_api = os.getenv("ARRIVALS_API")
+
+departures_api = os.getenv("DEPARTURES_API")
+
+main("data/arrivals.json", arrivals_api)
+
+main("data/departures.json", departures_api)
