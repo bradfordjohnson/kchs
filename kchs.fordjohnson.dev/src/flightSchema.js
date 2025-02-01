@@ -1,0 +1,51 @@
+export function mapDepartureData(flight) {
+    return {
+        carrierCode: flight.carrierCode.icao,
+        // carrierCodes: flight.carrierCode,
+        flightNumber: flight.flightNumber,
+        flightType: flight.flightType,
+        // aircraftType: flight.aircraftType,
+        // serviceTypeCode: flight.serviceTypeCode,
+        // statusDetails: flight.statusDetails,
+        flightStatus: flight.statusDetails?.[0]?.state,
+        aircraftRegistrationNumber: flight.statusDetails?.[0]?.equipment.aircraftRegistrationNumber,
+        aircraftType: flight.statusDetails?.[0]?.equipment.actualAircraftType.icao,
+        // aircraftTypeCodes: flight.statusDetails?.[0]?.equipment.actualAircraftType,
+        departrueIcao: flight.statusDetails?.[0]?.departure.airport.icao,
+        departrueGate: flight.statusDetails?.[0]?.departure.gate,
+        estimatedDeparture: flight.statusDetails?.[0]?.departure.estimatedTime,
+        actualDeparture: flight.statusDetails?.[0]?.departure.actualTime,
+        // departure: flight.statusDetails?.[0]?.departure,
+        arrivalIcao: flight.statusDetails?.[0]?.arrival.airport.icao,
+        arrivalGate: flight.statusDetails?.[0]?.arrival.gate,
+        // arrival: flight.statusDetails?.[0]?.arrival,
+        estimatedArrival: flight.statusDetails?.[0]?.arrival.estimatedTime,
+        actualArrival: flight.statusDetails?.[0]?.arrival.actualTime,
+    };
+}
+
+export function mapArrivalData(flight) {
+    return {
+        carrierCode: flight.carrierCode.icao,
+        // carrierCodes: flight.carrierCode,
+        flightNumber: flight.flightNumber,
+        flightType: flight.flightType,
+        // aircraftType: flight.aircraftType,
+        // serviceTypeCode: flight.serviceTypeCode,
+        // statusDetails: flight.statusDetails,
+        flightStatus: flight.statusDetails?.[0]?.state,
+        aircraftRegistrationNumber: flight.statusDetails?.[0]?.equipment.aircraftRegistrationNumber,
+        aircraftType: flight.statusDetails?.[0]?.equipment.actualAircraftType.icao,
+        // aircraftTypeCodes: flight.statusDetails?.[0]?.equipment.actualAircraftType,
+        departrueIcao: flight.statusDetails?.[0]?.departure.airport.icao,
+        departrueGate: flight.statusDetails?.[0]?.departure.gate,
+        estimatedDeparture: flight.statusDetails?.[0]?.departure.estimatedTime,
+        actualDeparture: flight.statusDetails?.[0]?.departure.actualTime,
+        // departure: flight.statusDetails?.[0]?.departure,
+        arrivalIcao: flight.statusDetails?.[0]?.arrival.airport.icao,
+        arrivalGate: flight.statusDetails?.[0]?.arrival.gate,
+        // arrival: flight.statusDetails?.[0]?.arrival,
+        estimatedArrival: flight.statusDetails?.[0]?.arrival.estimatedTime,
+        actualArrival: flight.statusDetails?.[0]?.arrival.actualTime,
+    };
+}
