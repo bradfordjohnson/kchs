@@ -183,14 +183,13 @@ def load_data(file_path, key_name, extracted_data):
 def get_est_timestamp():
     utc_now = datetime.now(pytz.utc)
     est = pytz.timezone("US/Eastern")
-    return str(utc_now.astimezone(est))
+    return str(utc_now.astimezone(est).date())
 
 
 def main(file_path, url):
     data = get_flight_data(url)
     extracted_data = extract_flight_data(data)
     load_data(file_path, get_est_timestamp(), extracted_data)
-
 
 arrivals_api = os.getenv("ARRIVALS_API")
 
