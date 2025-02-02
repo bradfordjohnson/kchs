@@ -34,6 +34,8 @@ def extract_flight_data(data):
                 if flight.get("statusDetails")
                 else None
             ),
+            "departureDate": flight.get("departure", {}).get("date", None),
+            "arrivalDate": flight.get("arrival", {}).get("date", None),
             "aircraftRegistrationNumber": (
                 flight.get("statusDetails", [{}])[0]
                 .get("equipment", {})
