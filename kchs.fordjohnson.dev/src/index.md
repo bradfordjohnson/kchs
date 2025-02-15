@@ -56,7 +56,7 @@ const filteredDepartures = departures.filter(item =>
   
 </div>
 
-<div class="grid grid-cols-2">
+<div class="grid grid-cols-2" style="grid-auto-rows: auto;">
   <div class="card" style="padding: 0;">
     ${Inputs.table(filteredArrivals, {
   columns: [
@@ -110,7 +110,7 @@ const filteredDepartures = departures.filter(item =>
 })}
   </div>
 </div>
-<div class="grid grid-cols-2">
+<div class="grid grid-cols-2" style="grid-auto-rows: auto;">
   <div class="card">
   <h2>Arrival Status by Carrier</h2>
 
