@@ -20,7 +20,7 @@ style: custom-style.css
 
 ```js
 import * as Plot from "npm:@observablehq/plot";
-import { API_CONFIG, carrierCodes, todaysDate, mapData, chsGates} from "./config.js";
+import { API_CONFIG, carrierCodes, todaysDate, mapData, chsGates, chsGatePlanes} from "./config.js";
 
 async function getData(url) {
   try {
@@ -182,30 +182,36 @@ const departureSparkline = Plot.plot({
 import * as L from "npm:leaflet";
 
 const div = display(document.createElement("div"));
-div.style = "height: 600px;";
+div.style = "height: 500px;";
 
-const map = L.map(div)
-  .setView([32.885336, -80.036886], 18);
+
+const map = L.map(div,  { zoomControl: false, scrollWheelZoom: false, dragging: false })
+  .setView([32.885636, -80.036886], 18);
 
 L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
 })
   .addTo(map);
 
-Object.entries(chsGates).forEach(([gate, coords]) => {
-  L.circle(coords, {
-    radius:  4,
-    color: "green"
-  })
-  .addTo(map)
-  .bindPopup(`<b>Gate: ${gate}</b>`);
-});
+// Object.entries(chsGates).forEach(([gate, coords]) => {
+//   L.circle(coords, {
+//     radius:  4,
+//     color: "green"
+//   })
+//   .addTo(map)
+//   .bindPopup(`<b>Gate: ${gate}</b>`);
+// });
 
 // var svgElement = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-// svgElement.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="-1758.68 -905.444 1642 1515">
-// 	<path d="M-1741.1785-212.7127q-20.1383-24.8687-17.1078-53.7012 3.0304-28.8326 27.8991-48.9708 67.6117-54.7509 277.1752-32.7249l337.5519 35.4781 489.7581-580.6049q.925-2.0358 4.0336-4.5531 10.88-8.8105 23.5382-7.4801l90.0138 9.4608q12.6582 1.3304 21.4687 12.2105 13.2157 16.3201 4.2617 33.865L-757.0112-274.936-412.427-238.7187Q-270.26-441.3429-259.38-450.1534q10.88-8.8105 23.5382-7.4801l90.6432 10.238q12.6582 1.3304 21.4687 12.2105 11.9571 14.7658 4.4095 32.4585L-239.3766-106.0591l55.7521 315.1455q2.2977 18.7275-11.691 30.0553-10.88 8.8105-23.5382 7.4801l-90.0138-9.4608q-12.6582-1.3304-21.4687-12.2105-8.8105-10.88-105.7428-238.6346L-780.6633-49.9013-631.7421 569.3914q5.1106 19.0232-11.2095 32.2389-10.88 8.8105-23.5382 7.4801l-90.0138-9.4608q-12.6582-1.3304-21.4687-12.2105l-2.9988-5.2922L-1139.3122-87.5969-1476.8641-123.075q-209.5635-22.026-264.3144-89.6377Z" fill="#000000"/>
-// </svg>`;
-// var svgElementBounds = [ [ 32.885197, -80.035599], [ 32.884672, -80.035355 ] ];
+// svgElement.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="-1833.46 -449.694 1634 1457"><path d="m-1790.3492 706.5654q78.8488 36.7678 276.8588-35.302l318.9423-116.0855 615.6712 444.8752 5.0152 3.442q12.6883 5.9167 24.6486 1.5634L-464.1619 974.1025q11.9603-4.3532 17.877-17.0415 8.875-19.0325-4.0576-33.8901L-855.6721 431.8371-530.0852 313.3332Q-343.122 475.5453-330.4337 481.4619-317.7454 487.3786-305.785 483.0254L-220.7338 452.0693Q-208.7734 447.716-202.8568 435.0277-195.2496 418.7142-205.5244 402.8892L-393.7847 144.0784-415.9293-175.1936q-.9723-19.2108-18.1921-27.2405-12.6883-5.9167-24.6486-1.5634l-85.9576 30.5335q-11.9603 4.3532-17.877 17.0415-5.9167 12.6883-44.8709 257.1276L-933.0624 219.209-938.3852-417.7154q.3567-19.6945-18.6758-28.5695-12.6883-5.9167-24.6486-1.5634l-85.0513 30.9561q-11.9603 4.3532-17.877 17.0415-1.6905 3.6252-1.6294 5.8605l-185.6712 736.54-318.9423 116.0855q-198.01 72.0697-234.7778 150.9185-13.5238 29.0018-3.6081 56.2448 9.9156 27.243 38.9175 40.7668z" fill="#000000"/></svg>`;
+// var svgElementBounds = [ [ 32.886579,-80.037513], [ 32.886054,-80.037269 ] ];
 // L.svgOverlay(svgElement, svgElementBounds).addTo(map);
+
+
+Object.values(chsGatePlanes).forEach(({ svg, bounds }) => {
+  var svgElement = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  svgElement.innerHTML = svg;
+  L.svgOverlay(svgElement, bounds).addTo(map);
+});
 
 ```
