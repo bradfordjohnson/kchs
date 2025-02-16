@@ -1,4 +1,20 @@
+---
+style: custom-style.css
+---
+
 # Charleston International Airport
+
+<div class="chip-description">
+  <div class="chip-caption">
+  See page:
+  </div>
+  <a href="/arrivals" class="chip">
+  Arrivals
+  </a>
+  <a href="/departures" class="chip">
+  Departures
+  </a>
+</div>
 
 ## Today's Flights
 
@@ -36,6 +52,7 @@ const filteredDepartures = departures.filter(item =>
   item.estimatedDeparture !== undefined &&
   carrierCodes.includes(item.carrierCode)
 );
+
 ```
 
 <div class="grid grid-cols-2" style="grid-auto-rows: auto;">
@@ -54,98 +71,6 @@ const filteredDepartures = departures.filter(item =>
     <span>${departureSparkline}</span>
   </div>
   
-</div>
-
-<div class="grid grid-cols-2" style="grid-auto-rows: auto;">
-  <div class="card" style="padding: 0;">
-    ${Inputs.table(filteredArrivals, {
-  columns: [
-    "arrivalTime",
-    "carrierCode",
-    "flightNumber",
-    "departrueIcao",
-    "arrivalInGateTimeliness",
-    "arrivalInGateVariation"
-  ],
-  header: {
-    arrivalTime: "  Arrival Time",
-    carrierCode: "  Carrier",
-    flightNumber: "  Flight Number",
-    departrueIcao: "  From",
-    arrivalInGateTimeliness: "  Flight Status",
-    arrivalInGateVariation: "  Variation"
-  },
-  format: {
-    flightNumber: (x) => x.toString()
-  },
-  sort: "arrivalTime",
-  layout: "auto",
-  select: false,
-})}
-  </div>
-  <div class="card" style="padding: 0;">
-    ${Inputs.table(filteredDepartures, {
-  columns: [
-    "departureTime",
-    "carrierCode",
-    "flightNumber",
-    "arrivalIcao",
-    "departureOutGateTimeliness",
-    "departureOutGateVariation"
-  ],
-  header: {
-    departureTime: "  Departure Time",
-    carrierCode: "  Carrier",
-    flightNumber: "  Flight Number",
-    arrivalIcao: "  To",
-    departureOutGateTimeliness: "  Flight Status",
-    departureOutGateVariation: "  Variation"
-  },
-  format: {
-    flightNumber: (x) => x.toString()
-  },
-  sort: "departureTime",
-  layout: "auto",
-  select: false,
-})}
-  </div>
-</div>
-<div class="grid grid-cols-2" style="grid-auto-rows: auto;">
-  <div class="card">
-  <h2>Arrival Status by Carrier</h2>
-
-  ${Plot.rectY(
-        countByCarrierAndField(filteredArrivals, "arrivalInGateTimeliness"),
-    {
-        x: "carrierCode",
-        y: "count",
-        fill: "arrivalInGateTimeliness",
-        tip: true,
-        sort: {x: "y", order: "descending"},
-    }).plot(
-        {
-            color: {legend: true, label: "Timeliness", domain: ["OnTime", "Early", "Delayed"]}
-        }
-    )}
-  
-  </div>
-  <div class="card">
-  <h2>Departure Status by Carrier</h2>
-  ${Plot.rectY(
-        countByCarrierAndField(filteredDepartures, "departureOutGateTimeliness"),
-    {
-        x: "carrierCode",
-        y: "count",
-        fill: "departureOutGateTimeliness",
-        tip: true,
-        sort: {x: "y", order: "descending"}
-    }).plot(
-        {
-            color: {legend: true, label: "Timeliness", domain: ["OnTime", "Early", "Delayed"]}
-        }
-    )}
-  
-  </div>
 </div>
 
 ```js
