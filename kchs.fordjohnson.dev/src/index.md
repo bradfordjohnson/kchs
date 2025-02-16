@@ -4,6 +4,8 @@ style: custom-style.css
 
 # Charleston International Airport
 
+## Today's Flights
+
 <div class="chip-description">
   <div class="chip-caption">
   See page:
@@ -15,8 +17,6 @@ style: custom-style.css
   Departures
   </a>
 </div>
-
-## Today's Flights
 
 ```js
 import * as Plot from "npm:@observablehq/plot";
@@ -55,7 +55,7 @@ const filteredDepartures = departures.filter(item =>
 
 ```
 
-<div class="grid grid-cols-2" style="grid-auto-rows: auto;">
+<div class="grid grid-cols-4" style="grid-auto-rows: auto;">
   <div class="card">
     <h2>Arrivals</h2>
     <span class="big">${filteredArrivals.length}</span>
@@ -72,24 +72,6 @@ const filteredDepartures = departures.filter(item =>
   </div>
   
 </div>
-
-```js
-function countByCarrierAndField(data, field) {
-  return Object.entries(
-    data.reduce((acc, obj) => {
-      let key = `${obj.carrierCode}-${obj[field]}`;
-      acc[key] = (acc[key] || 0) + 1;
-      return acc;
-    }, {})
-  )
-  .map(([key, count]) => {
-    let [carrierCode, fieldValue] = key.split("-");
-    return { carrierCode, [field]: fieldValue, count };
-  })
-  .sort((a, b) => b.count - a.count);
-}
-
-```
 
 ```js
 

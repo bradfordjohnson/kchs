@@ -18,7 +18,7 @@ style: custom-style.css
 
 ```js
 
-import { API_CONFIG, carrierCodes, todaysDate, mapData, airlineLogos, convertTo12Hour, getData } from "./config.js";
+import { API_CONFIG, carrierCodes, todaysDate, mapData, airlineLogos, convertTo12Hour, getData, locations } from "./config.js";
 
 const arrivalData = await getData(API_CONFIG.arrivalUrl);
 
@@ -56,7 +56,7 @@ function createArrivalBoard(arrivals) {
     row.innerHTML = `
       <td><img src="${airlineLogos[arrival.carrierCode]}" class="airline-logo" alt="${arrival.airline}"></td>
       <td>${arrival.flightNumber}</td>
-      <td>${arrival.departrueIcao}</td>
+      <td>${locations[arrival.departrueIcao] || arrival.departrueIcao}</td>
       <td>${convertTo12Hour(arrival.arrivalTime)}</td>
       <td>${arrival.arrivalGate}</td>
       <td class="${arrival.arrivalInGateTimeliness.toLowerCase()}">${arrival.arrivalInGateTimeliness}</td>
@@ -69,5 +69,4 @@ function createArrivalBoard(arrivals) {
 }
 
 display(createArrivalBoard(arrivals));
-
 ```

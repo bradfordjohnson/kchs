@@ -7,14 +7,14 @@
 <title>Charleston International Airport</title>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&amp;display=swap" crossorigin>
-<link rel="preload" as="style" href="./_import/custom-style.5176c292.css">
+<link rel="preload" as="style" href="./_import/custom-style.7fd960ca.css">
 <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&amp;display=swap" crossorigin>
-<link rel="stylesheet" type="text/css" href="./_import/custom-style.5176c292.css">
+<link rel="stylesheet" type="text/css" href="./_import/custom-style.7fd960ca.css">
 <link rel="modulepreload" href="./_observablehq/client.76e7ad2a.js">
 <link rel="modulepreload" href="./_observablehq/runtime.f168f711.js">
 <link rel="modulepreload" href="./_observablehq/stdlib.a7574edc.js">
 <link rel="modulepreload" href="./_npm/@observablehq/plot@0.6.16/e828d8c8.js">
-<link rel="modulepreload" href="./_import/config.dd6d928a.js">
+<link rel="modulepreload" href="./_import/config.419d930a.js">
 <link rel="modulepreload" href="./_npm/d3@7.9.0/7055d4c5.js">
 <link rel="modulepreload" href="./_npm/isoformat@0.2.1/c68fbd73.js">
 <link rel="modulepreload" href="./_npm/interval-tree-1d@1.0.4/a62ae5ce.js">
@@ -58,7 +58,7 @@
 import {define} from "./_observablehq/client.76e7ad2a.js";
 
 define({id: "c195d3ff", outputs: ["Plot","API_CONFIG","carrierCodes","todaysDate","mapData","getData","departureData","arrivalData"], body: async () => {
-const [Plot, {API_CONFIG, carrierCodes, todaysDate, mapData}] = await Promise.all([import("./_npm/@observablehq/plot@0.6.16/e828d8c8.js"), import("./_import/config.dd6d928a.js")]);
+const [Plot, {API_CONFIG, carrierCodes, todaysDate, mapData}] = await Promise.all([import("./_npm/@observablehq/plot@0.6.16/e828d8c8.js"), import("./_import/config.419d930a.js")]);
 
 async function getData(url) {
   try {
@@ -129,25 +129,6 @@ define({id: "aa732f1e", mode: "inline", inputs: ["departureSparkline","display"]
 display(await(
 departureSparkline
 ))
-}});
-
-define({id: "8414cc24", outputs: ["countByCarrierAndField"], body: () => {
-function countByCarrierAndField(data, field) {
-  return Object.entries(
-    data.reduce((acc, obj) => {
-      let key = `${obj.carrierCode}-${obj[field]}`;
-      acc[key] = (acc[key] || 0) + 1;
-      return acc;
-    }, {})
-  )
-  .map(([key, count]) => {
-    let [carrierCode, fieldValue] = key.split("-");
-    return { carrierCode, [field]: fieldValue, count };
-  })
-  .sort((a, b) => b.count - a.count);
-}
-
-return {countByCarrierAndField};
 }});
 
 define({id: "952072bf", inputs: ["getData","carrierCodes","filteredArrivals","todaysDate","Plot"], outputs: ["historicalArrivals","combinedArrivals","oneWeekAgo","formattedLastWeek","lastWeekArrivals","arrivalsWowPercentageChange","filteredHistoricalArrivals","arrivalsByDate","todaysArrivals","arrivalSparklineData","arrivalSparkline"], body: async (getData,carrierCodes,filteredArrivals,todaysDate,Plot) => {
@@ -262,6 +243,7 @@ return {historicalDepartures,combinedDepartures,lastWeekDepartures,departuresWow
 <div id="observablehq-center">
 <main id="observablehq-main" class="observablehq">
 <h1 id="charleston-international-airport" tabindex="-1"><a class="observablehq-header-anchor" href="#charleston-international-airport">Charleston International Airport</a></h1>
+<h2 id="todays-flights" tabindex="-1"><a class="observablehq-header-anchor" href="#todays-flights">Today's Flights</a></h2>
 <div class="chip-description">
   <div class="chip-caption">
   See page:
@@ -273,10 +255,9 @@ return {historicalDepartures,combinedDepartures,lastWeekDepartures,departuresWow
   Departures
   </a>
 </div>
-<h2 id="todays-flights" tabindex="-1"><a class="observablehq-header-anchor" href="#todays-flights">Today's Flights</a></h2>
 <div class="observablehq observablehq--block"><!--:c195d3ff:--></div>
 <div class="observablehq observablehq--block"><!--:c4a984e5:--></div>
-<div class="grid grid-cols-2" style="grid-auto-rows: auto;">
+<div class="grid grid-cols-4" style="grid-auto-rows: auto;">
   <div class="card">
     <h2>Arrivals</h2>
     <span class="big"><observablehq-loading></observablehq-loading><!--:b6dc4393:--></span>
@@ -292,12 +273,11 @@ return {historicalDepartures,combinedDepartures,lastWeekDepartures,departuresWow
     <span><observablehq-loading></observablehq-loading><!--:aa732f1e:--></span>
   </div>
 </div>
-<div class="observablehq observablehq--block"><!--:8414cc24:--></div>
 <div class="observablehq observablehq--block"><!--:952072bf:--></div>
 <div class="observablehq observablehq--block"><!--:2a551b63:--></div>
 </main>
 <footer id="observablehq-footer">
-<div>Built with <a href="https://observablehq.com/" target="_blank" rel="noopener noreferrer">Observable</a> on <a title="2025-02-15T20:08:32">Feb 15, 2025</a>.</div>
+<div>Built with <a href="https://observablehq.com/" target="_blank" rel="noopener noreferrer">Observable</a> on <a title="2025-02-16T09:55:50">Feb 16, 2025</a>.</div>
 </footer>
 </div>
 </body>

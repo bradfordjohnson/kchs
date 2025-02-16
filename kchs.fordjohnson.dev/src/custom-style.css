@@ -66,13 +66,13 @@
 }
 
 .arrival-board .ontime, .departure-board .ontime {
-    color: green;
+    color:#09b309;
 }
 
 .arrival-board .delayed, .departure-board .delayed {
-    color: red;
+    color:#B30909;
 }
 
 .arrival-board .early, .departure-board .early {
-    color: blue;
+    color:#0909b3;
 }

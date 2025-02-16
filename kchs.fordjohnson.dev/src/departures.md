@@ -19,7 +19,7 @@ style: custom-style.css
 
 ```js
 
-import { API_CONFIG, carrierCodes, todaysDate, mapData, airlineLogos, convertTo12Hour, getData } from "./config.js";
+import { API_CONFIG, carrierCodes, todaysDate, mapData, airlineLogos, convertTo12Hour, getData, locations } from "./config.js";
 
 const departureData = await getData(API_CONFIG.departureUrl);
 
@@ -57,7 +57,7 @@ function createDepartureBoard(departures) {
     row.innerHTML = `
       <td><img src="${airlineLogos[departure.carrierCode]}" class="airline-logo" alt="${departure.airline}"></td>
       <td>${departure.flightNumber}</td>
-      <td>${departure.arrivalIcao}</td>
+      <td>${locations[departure.arrivalIcao] || departure.arrivalIcao }</td>
       <td>${convertTo12Hour(departure.departureTime)}</td>
       <td>${departure.departrueGate}</td>
       <td class="${departure.departureOutGateTimeliness.toLowerCase()}">${departure.departureOutGateTimeliness}</td>
