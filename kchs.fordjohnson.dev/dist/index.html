@@ -8,13 +8,16 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&amp;display=swap" crossorigin>
 <link rel="preload" as="style" href="./_import/custom-style.7fd960ca.css">
+<link rel="preload" as="style" href="./_npm/leaflet@1.9.4/dist/leaflet.css">
 <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&amp;display=swap" crossorigin>
 <link rel="stylesheet" type="text/css" href="./_import/custom-style.7fd960ca.css">
-<link rel="modulepreload" href="./_observablehq/client.76e7ad2a.js">
+<link rel="stylesheet" type="text/css" href="./_npm/leaflet@1.9.4/dist/leaflet.css">
+<link rel="modulepreload" href="./_observablehq/client.e369bcc0.js">
 <link rel="modulepreload" href="./_observablehq/runtime.f168f711.js">
 <link rel="modulepreload" href="./_observablehq/stdlib.a7574edc.js">
 <link rel="modulepreload" href="./_npm/@observablehq/plot@0.6.16/e828d8c8.js">
-<link rel="modulepreload" href="./_import/config.419d930a.js">
+<link rel="modulepreload" href="./_import/config.e977412e.js">
+<link rel="modulepreload" href="./_npm/leaflet@1.9.4/d8a0af43.js">
 <link rel="modulepreload" href="./_npm/d3@7.9.0/7055d4c5.js">
 <link rel="modulepreload" href="./_npm/isoformat@0.2.1/c68fbd73.js">
 <link rel="modulepreload" href="./_npm/interval-tree-1d@1.0.4/a62ae5ce.js">
@@ -55,10 +58,10 @@
 <link rel="icon" href="./_file/observable.1af93621.png" type="image/png" sizes="32x32">
 <script type="module">
 
-import {define} from "./_observablehq/client.76e7ad2a.js";
+import {define} from "./_observablehq/client.e369bcc0.js";
 
-define({id: "c195d3ff", outputs: ["Plot","API_CONFIG","carrierCodes","todaysDate","mapData","getData","departureData","arrivalData"], body: async () => {
-const [Plot, {API_CONFIG, carrierCodes, todaysDate, mapData}] = await Promise.all([import("./_npm/@observablehq/plot@0.6.16/e828d8c8.js"), import("./_import/config.419d930a.js")]);
+define({id: "1e540a73", outputs: ["Plot","API_CONFIG","carrierCodes","todaysDate","mapData","chsGates","getData","departureData","arrivalData"], body: async () => {
+const [Plot, {API_CONFIG, carrierCodes, todaysDate, mapData, chsGates}] = await Promise.all([import("./_npm/@observablehq/plot@0.6.16/e828d8c8.js"), import("./_import/config.e977412e.js")]);
 
 async function getData(url) {
   try {
@@ -73,7 +76,7 @@ async function getData(url) {
 }
 const departureData = await getData(API_CONFIG.departureUrl);
 const arrivalData = await getData(API_CONFIG.arrivalUrl);
-return {Plot,API_CONFIG,carrierCodes,todaysDate,mapData,getData,departureData,arrivalData};
+return {Plot,API_CONFIG,carrierCodes,todaysDate,mapData,chsGates,getData,departureData,arrivalData};
 }});
 
 define({id: "c4a984e5", inputs: ["arrivalData","mapData","departureData","todaysDate","carrierCodes"], outputs: ["arrivals","departures","filteredArrivals","filteredDepartures"], body: (arrivalData,mapData,departureData,todaysDate,carrierCodes) => {
@@ -237,6 +240,39 @@ const departureSparkline = Plot.plot({
 return {historicalDepartures,combinedDepartures,lastWeekDepartures,departuresWowPercentageChange,filteredHistoricalDepartures,departuresByDate,todaysDepartures,departureSparklineData,departureSparkline};
 }});
 
+define({id: "a7d995eb", inputs: ["display","chsGates"], outputs: ["L","div","map"], body: async (display,chsGates) => {
+const L = await import("./_npm/leaflet@1.9.4/d8a0af43.js");
+
+const div = display(document.createElement("div"));
+div.style = "height: 600px;";
+
+const map = L.map(div)
+  .setView([32.885336, -80.036886], 18);
+
+L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+})
+  .addTo(map);
+
+Object.entries(chsGates).forEach(([gate, coords]) => {
+  L.circle(coords, {
+    radius:  4,
+    color: "green"
+  })
+  .addTo(map)
+  .bindPopup(`<b>Gate: ${gate}</b>`);
+});
+
+// var svgElement = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+// svgElement.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="-1758.68 -905.444 1642 1515">
+// 	<path d="M-1741.1785-212.7127q-20.1383-24.8687-17.1078-53.7012 3.0304-28.8326 27.8991-48.9708 67.6117-54.7509 277.1752-32.7249l337.5519 35.4781 489.7581-580.6049q.925-2.0358 4.0336-4.5531 10.88-8.8105 23.5382-7.4801l90.0138 9.4608q12.6582 1.3304 21.4687 12.2105 13.2157 16.3201 4.2617 33.865L-757.0112-274.936-412.427-238.7187Q-270.26-441.3429-259.38-450.1534q10.88-8.8105 23.5382-7.4801l90.6432 10.238q12.6582 1.3304 21.4687 12.2105 11.9571 14.7658 4.4095 32.4585L-239.3766-106.0591l55.7521 315.1455q2.2977 18.7275-11.691 30.0553-10.88 8.8105-23.5382 7.4801l-90.0138-9.4608q-12.6582-1.3304-21.4687-12.2105-8.8105-10.88-105.7428-238.6346L-780.6633-49.9013-631.7421 569.3914q5.1106 19.0232-11.2095 32.2389-10.88 8.8105-23.5382 7.4801l-90.0138-9.4608q-12.6582-1.3304-21.4687-12.2105l-2.9988-5.2922L-1139.3122-87.5969-1476.8641-123.075q-209.5635-22.026-264.3144-89.6377Z" fill="#000000"/>
+// </svg>`;
+// var svgElementBounds = [ [ 32.885197, -80.035599], [ 32.884672, -80.035355 ] ];
+// L.svgOverlay(svgElement, svgElementBounds).addTo(map);
+
+return {L,div,map};
+}});
+
 </script>
 </head>
 <body>
@@ -255,7 +291,7 @@ return {historicalDepartures,combinedDepartures,lastWeekDepartures,departuresWow
   Departures
   </a>
 </div>
-<div class="observablehq observablehq--block"><!--:c195d3ff:--></div>
+<div class="observablehq observablehq--block"><!--:1e540a73:--></div>
 <div class="observablehq observablehq--block"><!--:c4a984e5:--></div>
 <div class="grid grid-cols-4" style="grid-auto-rows: auto;">
   <div class="card">
@@ -275,9 +311,10 @@ return {historicalDepartures,combinedDepartures,lastWeekDepartures,departuresWow
 </div>
 <div class="observablehq observablehq--block"><!--:952072bf:--></div>
 <div class="observablehq observablehq--block"><!--:2a551b63:--></div>
+<div class="observablehq observablehq--block"><!--:a7d995eb:--></div>
 </main>
 <footer id="observablehq-footer">
-<div>Built with <a href="https://observablehq.com/" target="_blank" rel="noopener noreferrer">Observable</a> on <a title="2025-02-16T09:55:50">Feb 16, 2025</a>.</div>
+<div>Built with <a href="https://observablehq.com/" target="_blank" rel="noopener noreferrer">Observable</a> on <a title="2025-02-16T14:21:38">Feb 16, 2025</a>.</div>
 </footer>
 </div>
 </body>
