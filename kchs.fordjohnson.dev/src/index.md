@@ -59,14 +59,14 @@ const filteredDepartures = departures.filter(item =>
   <div class="card">
     <h2>Arrivals</h2>
     <span class="big">${filteredArrivals.length}</span>
-    <span class="small">${arrivalsWowPercentageChange.toFixed(2)}% WoW</span>
+    <span class="small">${arrivalsWowPercentageChange.toFixed(2)}% WoW Δ</span>
     <br/>
     <span>${arrivalSparkline}</span>
   </div>
   <div class="card">
     <h2>Departures</h2>
     <span class="big">${filteredDepartures.length}</span>
-    <span class="small">${departuresWowPercentageChange.toFixed(2)}% WoW</span>
+    <span class="small">${departuresWowPercentageChange.toFixed(2)}% WoW Δ</span>
     <br/>
     <span>${departureSparkline}</span>
   </div>
@@ -182,10 +182,11 @@ const departureSparkline = Plot.plot({
 import * as L from "npm:leaflet";
 
 const div = display(document.createElement("div"));
-div.style = "height: 500px;";
+div.style = "height: 450px;";
 
 
-const map = L.map(div,  { zoomControl: false, scrollWheelZoom: false, dragging: false })
+
+const map = L.map(div,  { zoomControl: true, scrollWheelZoom: false, dragging: true })
   .setView([32.885636, -80.036886], 18);
 
 L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -203,15 +204,39 @@ L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
 // });
 
 // var svgElement = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-// svgElement.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="-1833.46 -449.694 1634 1457"><path d="m-1790.3492 706.5654q78.8488 36.7678 276.8588-35.302l318.9423-116.0855 615.6712 444.8752 5.0152 3.442q12.6883 5.9167 24.6486 1.5634L-464.1619 974.1025q11.9603-4.3532 17.877-17.0415 8.875-19.0325-4.0576-33.8901L-855.6721 431.8371-530.0852 313.3332Q-343.122 475.5453-330.4337 481.4619-317.7454 487.3786-305.785 483.0254L-220.7338 452.0693Q-208.7734 447.716-202.8568 435.0277-195.2496 418.7142-205.5244 402.8892L-393.7847 144.0784-415.9293-175.1936q-.9723-19.2108-18.1921-27.2405-12.6883-5.9167-24.6486-1.5634l-85.9576 30.5335q-11.9603 4.3532-17.877 17.0415-5.9167 12.6883-44.8709 257.1276L-933.0624 219.209-938.3852-417.7154q.3567-19.6945-18.6758-28.5695-12.6883-5.9167-24.6486-1.5634l-85.0513 30.9561q-11.9603 4.3532-17.877 17.0415-1.6905 3.6252-1.6294 5.8605l-185.6712 736.54-318.9423 116.0855q-198.01 72.0697-234.7778 150.9185-13.5238 29.0018-3.6081 56.2448 9.9156 27.243 38.9175 40.7668z" fill="#000000"/></svg>`;
-// var svgElementBounds = [ [ 32.886579,-80.037513], [ 32.886054,-80.037269 ] ];
+// svgElement.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="294.728 -842.512 1642 1515">
+// 	<path d="m1908.1019-252.4527q-67.6116-54.7508-277.1752-32.7248l-337.552 35.4781-489.7581-580.6049-4.0336-4.5531q-10.88-8.8105-23.5382-7.48L686.031-832.8766q-12.6582 1.3304-21.4687 12.2105-13.2157 16.3201-4.2618 33.8651L934.7258-212.0038 590.1416-175.7867Q447.9746-378.4109 437.0945-387.2213 426.2146-396.0319 413.5563-394.7013L323.5426-385.2405Q310.8843-383.9101 302.0738-373.0301 290.746-359.0415 296.8871-341.2008L416.9433-44.5335 361.1913 270.612q-3.7041 18.8754 11.0617 30.8324 10.88 8.8105 23.5382 7.48l90.791-8.8315q12.6582-1.3304 21.4687-12.2105 8.8105-10.88 105.7428-238.6345L958.3778 13.0307 809.4566 632.3235q-5.1106 19.0232 11.2095 32.239 10.88 8.8105 23.5382 7.48l90.0139-9.4608q12.6582-1.3304 21.4687-12.2105 2.5174-3.1085 2.9988-5.2923l358.3411-669.7437 337.552-35.4781q209.5635-22.0259 264.3143-89.6377 20.1382-24.8686 17.1077-53.7012-3.0304-28.8326-27.8992-48.9709z" fill="#000000"/>
+// </svg>`;
+// var svgElementBounds = [ [ 32.885238,-80.03826], [32.884713,-80.038016 ] ];
 // L.svgOverlay(svgElement, svgElementBounds).addTo(map);
 
-
-Object.values(chsGatePlanes).forEach(({ svg, bounds }) => {
+const early = ["A1", "B2"];
+const late = ["B9", "B10"];
+const hidden = ["A2A"];
+Object.entries(chsGatePlanes).forEach(([key, { svg, bounds }]) => {
   var svgElement = document.createElementNS("http://www.w3.org/2000/svg", "svg");
   svgElement.innerHTML = svg;
+  svgElement.classList.add(`plane-${key}`);
+
+  // If the key is in the 'early' list, change fill to green
+  if (early.includes(key)) {
+    svgElement.querySelectorAll("path").forEach(path => {
+      path.setAttribute("fill", "#50C878");
+    });
+  }
+
+  if (late.includes(key)) {
+    svgElement.querySelectorAll("path").forEach(path => {
+      path.setAttribute("fill", "#880808");
+    });
+  }
+
+  if (hidden.includes(key)) {
+    svgElement.style.display = "none"; // Completely hides the SVG
+  }
+
   L.svgOverlay(svgElement, bounds).addTo(map);
 });
+
 
 ```
