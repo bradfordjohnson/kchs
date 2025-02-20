@@ -78,24 +78,38 @@ return {API_CONFIG,carrierCodes,todaysDate,mapData,airlineLogos,convertTo12Hour,
 </script>
 </head>
 <body>
+<input id="observablehq-sidebar-toggle" type="checkbox" title="Toggle sidebar">
+<label id="observablehq-sidebar-backdrop" for="observablehq-sidebar-toggle"></label>
+<nav id="observablehq-sidebar">
+  <ol>
+    <label id="observablehq-sidebar-close" for="observablehq-sidebar-toggle"></label>
+    <li class="observablehq-link"><a href="./">Charleston International Airport</a></li>
+  </ol>
+  <ol>
+    <li class="observablehq-link"><a href="./arrivals">Arrivals</a></li>
+    <li class="observablehq-link"><a href="./chs">CHS Code</a></li>
+    <li class="observablehq-link observablehq-link-active"><a href="./departures">Departures</a></li>
+  </ol>
+</nav>
+<script>{const e=document.querySelector("#observablehq-sidebar"),o=document.querySelector("#observablehq-sidebar-toggle"),r=sessionStorage.getItem("observablehq-sidebar");r?o.checked=r==="true":o.indeterminate=!0;for(const t of document.querySelectorAll("#observablehq-sidebar summary")){const s=t.parentElement;switch(sessionStorage.getItem(`observablehq-sidebar:${t.textContent}`)){case"true":s.open=!0;break;case"false":s.classList.contains("observablehq-section-active")||(s.open=!1);break}}addEventListener("beforeunload",()=>sessionStorage.setItem("observablehq-sidebar-scrolly",`${e.scrollTop}`));const a=sessionStorage.getItem("observablehq-sidebar-scrolly");a!=null&&(e.style.cssText="overflow: hidden;",e.scrollTop=+a,e.style.cssText="");}</script>
 <div id="observablehq-center">
 <main id="observablehq-main" class="observablehq">
 <h1 id="departures" tabindex="-1"><a class="observablehq-header-anchor" href="#departures">Departures</a></h1>
-<div class="chip-description">
+<!-- <div class="chip-description">
   <div class="chip-caption">
   See page:
   </div>
-  <a href="./" class="chip">
+  <a href="/" class="chip">
   Home
   </a>
-  <a href="./arrivals" class="chip">
+  <a href="/arrivals" class="chip">
   Arrivals
   </a>
-</div>
+</div> -->
 <div class="observablehq observablehq--block"><!--:56a44cf8:--></div>
 </main>
 <footer id="observablehq-footer">
-<div>Built with <a href="https://observablehq.com/" target="_blank" rel="noopener noreferrer">Observable</a> on <a title="2025-02-17T17:01:57">Feb 17, 2025</a>.</div>
+<div>Built with <a href="https://observablehq.com/" target="_blank" rel="noopener noreferrer">Observable</a> on <a title="2025-02-20T08:54:13">Feb 20, 2025</a>.</div>
 </footer>
 </div>
 </body>

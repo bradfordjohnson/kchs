@@ -29,7 +29,7 @@ Built with Observable Framework, this dashboard provides a dynamic, data-driven 
 
 ## Today's Flights
 
-<div class="chip-description">
+<!-- <div class="chip-description">
   <div class="chip-caption">
   See page:
   </div>
@@ -39,7 +39,7 @@ Built with Observable Framework, this dashboard provides a dynamic, data-driven 
   <a href="/departures" class="chip">
   Departures
   </a>
-</div>
+</div> -->
 
 ```js
 import * as Plot from "npm:@observablehq/plot";

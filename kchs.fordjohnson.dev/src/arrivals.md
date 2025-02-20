@@ -4,7 +4,7 @@ style: custom-style.css
 
 # Arrivals
 
-<div class="chip-description">
+<!-- <div class="chip-description">
   <div class="chip-caption">
   See page:
   </div>
@@ -14,7 +14,7 @@ style: custom-style.css
   <a href="/departures" class="chip">
   Departures
   </a>
-</div>
+</div> -->
 
 ```js
 
