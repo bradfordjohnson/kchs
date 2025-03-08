@@ -1,3 +1,4 @@
+<!-- markdownlint-disable -->
 # About
 
 [![ETL Flight Data](https://github.com/bradfordjohnson/kchs/actions/workflows/etl-flight-data.yaml/badge.svg)](https://github.com/bradfordjohnson/kchs/actions/workflows/etl-flight-data.yaml)

@@ -550,6 +550,8 @@ return {airlines,airports};
     <li class="observablehq-link"><a href="./">Charleston International Airport</a></li>
   </ol>
   <ol>
+    <li class="observablehq-link"><a href="./about">About</a></li>
+    <li class="observablehq-link"><a href="./gate-map">Gate Map</a></li>
     <li class="observablehq-link observablehq-link-active"><a href="./helper-functions">Helper Functions / Constants</a></li>
     <li class="observablehq-link"><a href="./raw-flights">Raw Flights</a></li>
     <li class="observablehq-link"><a href="./update-loop">Update Loop</a></li>
@@ -558,6 +560,7 @@ return {airlines,airports};
 <script>{const e=document.querySelector("#observablehq-sidebar"),o=document.querySelector("#observablehq-sidebar-toggle"),r=sessionStorage.getItem("observablehq-sidebar");r?o.checked=r==="true":o.indeterminate=!0;for(const t of document.querySelectorAll("#observablehq-sidebar summary")){const s=t.parentElement;switch(sessionStorage.getItem(`observablehq-sidebar:${t.textContent}`)){case"true":s.open=!0;break;case"false":s.classList.contains("observablehq-section-active")||(s.open=!1);break}}addEventListener("beforeunload",()=>sessionStorage.setItem("observablehq-sidebar-scrolly",`${e.scrollTop}`));const a=sessionStorage.getItem("observablehq-sidebar-scrolly");a!=null&&(e.style.cssText="overflow: hidden;",e.scrollTop=+a,e.style.cssText="");}</script>
 <div id="observablehq-center">
 <main id="observablehq-main" class="observablehq">
+<!-- markdownlint-disable -->
 <h1 id="helper-functions-constants" tabindex="-1"><a class="observablehq-header-anchor" href="#helper-functions-constants">Helper Functions / Constants</a></h1>
 <div class="observablehq observablehq--block"><!--:41b154da:--></div>
 <pre data-language="js"><code class="language-js"><span class="hljs-keyword">function</span> <span class="hljs-title function_">convertTo12Hour</span>(<span class="hljs-params">time</span>) {
@@ -1078,7 +1081,7 @@ return {airlines,airports};
 </code></pre>
 </main>
 <footer id="observablehq-footer">
-<div>Built with <a href="https://observablehq.com/" target="_blank" rel="noopener noreferrer">Observable</a> on <a title="2025-03-08T09:37:20">Mar 8, 2025</a>.</div>
+<div>Built with <a href="https://observablehq.com/" target="_blank" rel="noopener noreferrer">Observable</a> on <a title="2025-03-08T15:46:33">Mar 8, 2025</a>.</div>
 </footer>
 </div>
 </body>

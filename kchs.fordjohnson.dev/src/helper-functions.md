@@ -1,3 +1,4 @@
+<!-- markdownlint-disable -->
 # Helper Functions / Constants
 
 ```js echo

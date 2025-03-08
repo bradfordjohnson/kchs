@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<meta name="generator" content="Observable Framework v1.13.2">
+<title>About | Charleston International Airport</title>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&amp;display=swap" crossorigin>
+<link rel="preload" as="style" href="./_observablehq/theme-air,alt.7f878b97.css">
+<link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&amp;display=swap" crossorigin>
+<link rel="stylesheet" type="text/css" href="./_observablehq/theme-air,alt.7f878b97.css">
+<link rel="modulepreload" href="./_observablehq/client.e369bcc0.js">
+<link rel="modulepreload" href="./_observablehq/runtime.f168f711.js">
+<link rel="modulepreload" href="./_observablehq/stdlib.a7574edc.js">
+<link rel="icon" href="./_file/observable.1af93621.png" type="image/png" sizes="32x32">
+<script type="module">
+
+import "./_observablehq/client.e369bcc0.js";
+
+</script>
+</head>
+<body>
+<input id="observablehq-sidebar-toggle" type="checkbox" title="Toggle sidebar">
+<label id="observablehq-sidebar-backdrop" for="observablehq-sidebar-toggle"></label>
+<nav id="observablehq-sidebar">
+  <ol>
+    <label id="observablehq-sidebar-close" for="observablehq-sidebar-toggle"></label>
+    <li class="observablehq-link"><a href="./">Charleston International Airport</a></li>
+  </ol>
+  <ol>
+    <li class="observablehq-link observablehq-link-active"><a href="./about">About</a></li>
+    <li class="observablehq-link"><a href="./gate-map">Gate Map</a></li>
+    <li class="observablehq-link"><a href="./helper-functions">Helper Functions / Constants</a></li>
+    <li class="observablehq-link"><a href="./raw-flights">Raw Flights</a></li>
+    <li class="observablehq-link"><a href="./update-loop">Update Loop</a></li>
+  </ol>
+</nav>
+<script>{const e=document.querySelector("#observablehq-sidebar"),o=document.querySelector("#observablehq-sidebar-toggle"),r=sessionStorage.getItem("observablehq-sidebar");r?o.checked=r==="true":o.indeterminate=!0;for(const t of document.querySelectorAll("#observablehq-sidebar summary")){const s=t.parentElement;switch(sessionStorage.getItem(`observablehq-sidebar:${t.textContent}`)){case"true":s.open=!0;break;case"false":s.classList.contains("observablehq-section-active")||(s.open=!1);break}}addEventListener("beforeunload",()=>sessionStorage.setItem("observablehq-sidebar-scrolly",`${e.scrollTop}`));const a=sessionStorage.getItem("observablehq-sidebar-scrolly");a!=null&&(e.style.cssText="overflow: hidden;",e.scrollTop=+a,e.style.cssText="");}</script>
+<div id="observablehq-center">
+<main id="observablehq-main" class="observablehq">
+<!-- markdownlint-disable -->
+<h1 id="about" tabindex="-1"><a class="observablehq-header-anchor" href="#about">About</a></h1>
+<p><a href="https://github.com/bradfordjohnson/kchs/actions/workflows/etl-flight-data.yaml" target="_blank" rel="noopener noreferrer"><img src="https://github.com/bradfordjohnson/kchs/actions/workflows/etl-flight-data.yaml/badge.svg" alt="ETL Flight Data"></a>
+<a href="https://github.com/bradfordjohnson/kchs/actions/workflows/dashboard-deploy.yml" target="_blank" rel="noopener noreferrer"><img src="https://github.com/bradfordjohnson/kchs/actions/workflows/dashboard-deploy.yml/badge.svg" alt="Deploy dashboard to Pages"></a></p>
+<p>Built with Observable Framework, this dashboard provides a dynamic, data-driven view of Charleston International Airport (KCHS) flight activity. It combines JavaScript-powered visuals, data mapping and fetching with a Python-based ETL pipeline that collects daily flight snapshots for historical views.</p>
+<h2 id="features" tabindex="-1"><a class="observablehq-header-anchor" href="#features">Features</a></h2>
+<ul>
+<li>Daily flight metrics and trends for arrivals and departures
+<ul>
+<li>WoW delta comparisons</li>
+</ul>
+</li>
+<li>Arrivals and departures "boards", showing flights, statuses, and more.</li>
+</ul>
+<h3 id="features-in-development" tabindex="-1"><a class="observablehq-header-anchor" href="#features-in-development">Features in development</a></h3>
+<ul>
+<li>Live gate map – a Leaflet-based gate map with SVG plane overlays to track &amp; visualize real-time in-gate performance</li>
+<li>Main interactive dashboard page with historical and live data
+<ul>
+<li>dimensional filters, metric performance and trends</li>
+</ul>
+</li>
+</ul>
+<h3 id="todo" tabindex="-1"><a class="observablehq-header-anchor" href="#todo">TODO</a></h3>
+<ul>
+<li>Create data model and logic to determine what flights are in the gate at a given time</li>
+</ul>
+</main>
+<footer id="observablehq-footer">
+<div>Built with <a href="https://observablehq.com/" target="_blank" rel="noopener noreferrer">Observable</a> on <a title="2025-03-08T15:46:33">Mar 8, 2025</a>.</div>
+</footer>
+</div>
+</body>
+</html>

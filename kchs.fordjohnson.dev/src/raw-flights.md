@@ -1,3 +1,4 @@
+<!-- markdownlint-disable -->
 <!-- ---
 style: custom-style.css
 --- -->
@@ -157,8 +158,7 @@ async function fetchFlightData() {
     departures,
     arrivals
   );
-  display(flightsByRegistration);
-
+  display(flightsByRegistration)
 }
 
 fetchFlightData();

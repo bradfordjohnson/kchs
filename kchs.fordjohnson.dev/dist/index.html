@@ -7,17 +7,13 @@
 <title>Charleston International Airport</title>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&amp;display=swap" crossorigin>
-<link rel="preload" as="style" href="./_import/custom-style.7fd960ca.css">
-<link rel="preload" as="style" href="./_npm/leaflet@1.9.4/dist/leaflet.css">
+<link rel="preload" as="style" href="./_observablehq/theme-air,alt.7f878b97.css">
 <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,opsz,wght@0,8..60,200..900;1,8..60,200..900&amp;display=swap" crossorigin>
-<link rel="stylesheet" type="text/css" href="./_import/custom-style.7fd960ca.css">
-<link rel="stylesheet" type="text/css" href="./_npm/leaflet@1.9.4/dist/leaflet.css">
+<link rel="stylesheet" type="text/css" href="./_observablehq/theme-air,alt.7f878b97.css">
 <link rel="modulepreload" href="./_observablehq/client.e369bcc0.js">
 <link rel="modulepreload" href="./_observablehq/runtime.f168f711.js">
 <link rel="modulepreload" href="./_observablehq/stdlib.a7574edc.js">
 <link rel="modulepreload" href="./_npm/@observablehq/plot@0.6.16/e828d8c8.js">
-<link rel="modulepreload" href="./_import/config.ddd1b4b5.js">
-<link rel="modulepreload" href="./_npm/leaflet@1.9.4/d8a0af43.js">
 <link rel="modulepreload" href="./_npm/d3@7.9.0/7055d4c5.js">
 <link rel="modulepreload" href="./_npm/isoformat@0.2.1/c68fbd73.js">
 <link rel="modulepreload" href="./_npm/interval-tree-1d@1.0.4/a62ae5ce.js">
@@ -60,8 +56,514 @@
 
 import {define} from "./_observablehq/client.e369bcc0.js";
 
-define({id: "52cf6696", outputs: ["Plot","API_CONFIG","carrierCodes","todaysDate","mapData","chsGates","chsGatePlanes","getData","departureData","arrivalData"], body: async () => {
-const [Plot, {API_CONFIG, carrierCodes, todaysDate, mapData, chsGates, chsGatePlanes}] = await Promise.all([import("./_npm/@observablehq/plot@0.6.16/e828d8c8.js"), import("./_import/config.ddd1b4b5.js")]);
+define({id: "5f588f40", outputs: ["Plot","airlines","locations","getData","filterFlights","fetchFlightData"], body: async () => {
+const Plot = await import("./_npm/@observablehq/plot@0.6.16/e828d8c8.js");
+
+const airlines = [
+  {
+    code: "AA",
+    name: "American Airlines",
+  },
+  {
+    code: "AS",
+    name: "Alaska",
+  },
+  {
+    code: "G4",
+    name: "Allegiant",
+  },
+  {
+    code: "XP",
+    name: "Avelo",
+  },
+  {
+    code: "MX",
+    name: "Breeze Airways",
+  },
+  {
+    code: "DL",
+    name: "Delta",
+  },
+  {
+    code: "F9",
+    name: "Frontier",
+  },
+  {
+    code: "B6",
+    name: "JetBlue",
+  },
+  {
+    code: "3M",
+    name: "Silver",
+  },
+  {
+    code: "WN",
+    name: "Southwest",
+  },
+  {
+    code: "SY",
+    name: "Sun Country",
+  },
+  {
+    code: "UA",
+    name: "United Airlines",
+  },
+  {
+    code: "NK",
+    name: "Spirit",
+  },
+  {
+    code: "AC",
+    name: "Air Canada",
+  },
+];
+
+const locations = [
+  {
+    code: "CHS",
+    name: "Charleston",
+  },
+  {
+    code: "ATL",
+    name: "Atlanta",
+  },
+  {
+    code: "SEA",
+    name: "Seattle",
+  },
+  {
+    code: "CVG",
+    name: "Cincinnati",
+  },
+  {
+    code: "LCK",
+    name: "Columbus",
+  },
+  {
+    code: "IND",
+    name: "Indianapolis",
+  },
+  {
+    code: "SDF",
+    name: "Louisville",
+  },
+  {
+    code: "PIT",
+    name: "Pittsburgh",
+  },
+  {
+    code: "BLV",
+    name: "St. Louis",
+  },
+  {
+    code: "CLT",
+    name: "Charlotte",
+  },
+  {
+    code: "ORD",
+    name: "Chicago",
+  },
+  {
+    code: "DFW",
+    name: "Dallas/Forth Worth",
+  },
+  {
+    code: "PHL",
+    name: "Philadelphia",
+  },
+  {
+    code: "MIA",
+    name: "Miami",
+  },
+  {
+    code: "DCA",
+    name: "Washington, D.C.",
+  },
+  {
+    code: "HVN",
+    name: "New Haven",
+  },
+  {
+    code: "CAK",
+    name: "Akron/Canton",
+  },
+  {
+    code: "CMH",
+    name: "Columbus",
+  },
+  {
+    code: "RSW",
+    name: "Fort Myers",
+  },
+  {
+    code: "BDL",
+    name: "Hartford",
+  },
+  {
+    code: "ISP",
+    name: "Islip",
+  },
+  {
+    code: "LAS",
+    name: "Las Vegas",
+  },
+  {
+    code: "SDF",
+    name: "Louisville",
+  },
+  {
+    code: "MSY",
+    name: "New Orleans",
+  },
+  {
+    code: "ORF",
+    name: "Norfolk",
+  },
+  {
+    code: "MCO",
+    name: "Orlando",
+  },
+  {
+    code: "PFD",
+    name: "Providence",
+  },
+  {
+    code: "RIC",
+    name: "Richmond",
+  },
+  {
+    code: "SFO",
+    name: "San Francisco",
+  },
+  {
+    code: "SYR",
+    name: "Syracuse",
+  },
+  {
+    code: "TPA",
+    name: "Tampa",
+  },
+  {
+    code: "HPN",
+    name: "Westchester, NY",
+  },
+  {
+    code: "PBI",
+    name: "West Palm Beach",
+  },
+  {
+    code: "BOS",
+    name: "Boston",
+  },
+  {
+    code: "DTW",
+    name: "Detroit",
+  },
+  {
+    code: "LGA",
+    name: "New York City",
+  },
+  {
+    code: "JFK",
+    name: "New York City",
+  },
+  {
+    code: "MSP",
+    name: "Minneapolis",
+  },
+  {
+    code: "DEN",
+    name: "Denver",
+  },
+  {
+    code: "FLL",
+    name: "Fort Lauderdale",
+  },
+  {
+    code: "LAX",
+    name: "Los Angeles",
+  },
+  {
+    code: "AUS",
+    name: "Austin",
+  },
+  {
+    code: "BWI",
+    name: "Baltimore",
+  },
+  {
+    code: "MDW",
+    name: "Chicago",
+  },
+  {
+    code: "DAL",
+    name: "Dallas",
+  },
+  {
+    code: "HOU",
+    name: "Houston",
+  },
+  {
+    code: "MCI",
+    name: "Kansas City",
+  },
+  {
+    code: "BNA",
+    name: "Nashville",
+  },
+  {
+    code: "STL",
+    name: "St. Louis",
+  },
+  {
+    code: "IAH",
+    name: "Houston",
+  },
+  {
+    code: "EWR",
+    name: "Newark",
+  },
+  {
+    code: "IAD",
+    name: "Washington, D.C.",
+  },
+  {
+    code: "PNS",
+    name: "Pensacola",
+  },
+  {
+    code: "SAT",
+    name: "San Antonio",
+  },
+  {
+    code: "COS",
+    name: "Colorado Springs",
+  },
+  {
+    code: "PHX",
+    name: "Phoenix",
+  },
+  {
+    code: "PVD",
+    name: "Providence",
+  },
+  {
+    code: "PVU",
+    name: "Provo",
+  },
+  {
+    code: "TYS",
+    name: "Jacksonville",
+  },
+  {
+    code: "ABE",
+    name: "Allentown",
+  },
+  {
+    code: "OMA",
+    name: "Omaha",
+  },
+  {
+    code: "TRI",
+    name: "Bristol/Johnson/Kingsp",
+  },
+  {
+    code: "ABQ",
+    name: "Albuquerque",
+  },
+  {
+    code: "ALB",
+    name: "Albany",
+  },
+  {
+    code: "BHM",
+    name: "Birmingham",
+  },
+  {
+    code: "BRL",
+    name: "Burlington",
+  },
+  {
+    code: "BTR",
+    name: "Baton Rouge",
+  },
+  {
+    code: "BUF",
+    name: "Buffalo",
+  },
+  {
+    code: "CAE",
+    name: "Columbia",
+  },
+  {
+    code: "CID",
+    name: "Cedar Rapids",
+  },
+  {
+    code: "CLE",
+    name: "Cleveland",
+  },
+  {
+    code: "CRP",
+    name: "Corpus Christi",
+  },
+  {
+    code: "DAY",
+    name: "Dayton",
+  },
+  {
+    code: "DSM",
+    name: "Des Moines",
+  },
+  {
+    code: "ELP",
+    name: "El Paso",
+  },
+  {
+    code: "EVV",
+    name: "Evansville",
+  },
+  {
+    code: "FWA",
+    name: "Fort Wayne",
+  },
+  {
+    code: "GRR",
+    name: "Grand Rapids",
+  },
+  {
+    code: "GSO",
+    name: "Greensboro/High Point",
+  },
+  {
+    code: "GSP",
+    name: "Greenville/Spartanburg",
+  },
+  {
+    code: "HSV",
+    name: "Huntsville",
+  },
+  {
+    code: "JAX",
+    name: "Jacksonville",
+  },
+  {
+    code: "LFT",
+    name: "Lafayette",
+  },
+  {
+    code: "LIT",
+    name: "Little Rock",
+  },
+  {
+    code: "LRD",
+    name: "Laredo",
+  },
+  {
+    code: "MBS",
+    name: "Saginaw/Midland/Bay C.",
+  },
+  {
+    code: "MDT",
+    name: "Harrisburg",
+  },
+  {
+    code: "MEM",
+    name: "Memphis",
+  },
+  {
+    code: "MFE",
+    name: "McAllen/Mission",
+  },
+  {
+    code: "MGM",
+    name: "Montgomery",
+  },
+  {
+    code: "MKE",
+    name: "Milwaukee",
+  },
+  {
+    code: "MLI",
+    name: "Moline",
+  },
+  {
+    code: "MOB",
+    name: "Mobile",
+  },
+  {
+    code: "OKC",
+    name: "Oklahoma City",
+  },
+  {
+    code: "PDX",
+    name: "Portland",
+  },
+  {
+    code: "RDU",
+    name: "Raleigh/Durham",
+  },
+  {
+    code: "ROC",
+    name: "Rochester",
+  },
+  {
+    code: "SAN",
+    name: "San Diego",
+  },
+  {
+    code: "SBN",
+    name: "South Bend",
+  },
+  {
+    code: "SHV",
+    name: "Shreveport",
+  },
+  {
+    code: "SLC",
+    name: "Salt Lake City",
+  },
+  {
+    code: "SMF",
+    name: "Sacramento",
+  },
+  {
+    code: "SWF",
+    name: "New York",
+  },
+  {
+    code: "TOL",
+    name: "Toledo",
+  },
+  {
+    code: "TUL",
+    name: "Tulsa",
+  },
+  {
+    code: "TUS",
+    name: "Tucson",
+  },
+  {
+    code: "TVC",
+    name: "Traverse City",
+  },
+  {
+    code: "YUL",
+    name: "Montreal",
+  },
+  {
+    code: "YYZ",
+    name: "Toronto",
+  },
+  {
+    code: "PWM",
+    name: "Portland",
+  },
+  {
+    code: "MHT",
+    name: "Manchester",
+  },
+];
 
 async function getData(url) {
   try {
@@ -69,239 +571,192 @@ async function getData(url) {
     if (!response.ok) {
       throw new Error(`Response status: ${response.status}`);
     }
-    return await response.json();
+    const data = await response.json();
+    return data.data;
   } catch (error) {
     console.error(error.message);
+    return null;
   }
 }
-const departureData = await getData(API_CONFIG.departureUrl);
-const arrivalData = await getData(API_CONFIG.arrivalUrl);
-return {Plot,API_CONFIG,carrierCodes,todaysDate,mapData,chsGates,chsGatePlanes,getData,departureData,arrivalData};
-}});
 
-define({id: "c4a984e5", inputs: ["arrivalData","mapData","departureData","todaysDate","carrierCodes"], outputs: ["arrivals","departures","filteredArrivals","filteredDepartures"], body: (arrivalData,mapData,departureData,todaysDate,carrierCodes) => {
-const arrivals = arrivalData.data.map(flight =>  mapData(flight));
-const departures = departureData.data.map(flight =>  mapData(flight));
+function filterFlights(flights, flightType, airlines) {
+  return flights.filter((flight) => {
+    const airline = flight.carrierCode?.iata;
+    const serviceType = flight.serviceTypeCode?.iata;
+    if (!airline || !flight.statusDetails?.[0]) return false;
 
-const filteredArrivals = arrivals.filter(item => 
-  item.arrivalDate === todaysDate &&
-  item.estimatedArrival !== undefined &&
-  carrierCodes.includes(item.carrierCode)
-);
+    if (
+      (airline === "AC" &&
+        flightType === "arrival" &&
+        flight.departure.airport.iata !== "YYZ") ||
+      (airline === "UA" &&
+        flightType === "departure" &&
+        flight.arrival.airport.iata === "YYZ") ||
+      serviceType !== "J"
+    ) {
+      return false;
+    }
 
-const filteredDepartures = departures.filter(item => 
-  item.departureDate === todaysDate &&
-  item.estimatedDeparture !== undefined &&
-  carrierCodes.includes(item.carrierCode)
-);
+    if (flight.codeshare?.comment050?.code) {
+      const codeshareAirline = flight.codeshare.comment050.code;
+      if (
+        codeshareAirline !== "AC" &&
+        airlines.some((a) => a.code === codeshareAirline)
+      ) {
+        return false;
+      }
+    }
 
-return {arrivals,departures,filteredArrivals,filteredDepartures};
-}});
+    return true;
+  });
+}
 
-define({id: "b6dc4393", mode: "inline", inputs: ["filteredArrivals","display"], body: async (filteredArrivals,display) => {
-display(await(
-filteredArrivals.length
-))
-}});
+async function fetchFlightData() {
+  const arrivalData = await getData(
+    "https://ccaafids.azurewebsites.net/api/FIDsTest?code=VnSepGuKSiEXD0zW_eOg73NkKKgyT_jDIZOm8pvuCbs8AzFuNZG1RA==&dir=arrival"
+  );
 
-define({id: "b1c49502", mode: "inline", inputs: ["arrivalsWowPercentageChange","display"], body: async (arrivalsWowPercentageChange,display) => {
-display(await(
-arrivalsWowPercentageChange.toFixed(2)
-))
-}});
-
-define({id: "e7f0e3f0", mode: "inline", inputs: ["arrivalSparkline","display"], body: async (arrivalSparkline,display) => {
-display(await(
-arrivalSparkline
-))
-}});
-
-define({id: "58cc44fe", mode: "inline", inputs: ["filteredDepartures","display"], body: async (filteredDepartures,display) => {
-display(await(
-filteredDepartures.length
-))
-}});
-
-define({id: "690fccba", mode: "inline", inputs: ["departuresWowPercentageChange","display"], body: async (departuresWowPercentageChange,display) => {
-display(await(
-departuresWowPercentageChange.toFixed(2)
-))
-}});
-
-define({id: "aa732f1e", mode: "inline", inputs: ["departureSparkline","display"], body: async (departureSparkline,display) => {
-display(await(
-departureSparkline
-))
-}});
-
-define({id: "952072bf", inputs: ["getData","carrierCodes","filteredArrivals","todaysDate","Plot"], outputs: ["historicalArrivals","combinedArrivals","oneWeekAgo","formattedLastWeek","lastWeekArrivals","arrivalsWowPercentageChange","filteredHistoricalArrivals","arrivalsByDate","todaysArrivals","arrivalSparklineData","arrivalSparkline"], body: async (getData,carrierCodes,filteredArrivals,todaysDate,Plot) => {
-const historicalArrivals = await getData("https://raw.githubusercontent.com/bradfordjohnson/kchs/refs/heads/master/data/arrivals.json");
-
-const combinedArrivals = Object.values(historicalArrivals).flat(2);
-
-const oneWeekAgo = new Date();
-oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
-
-const formattedLastWeek = oneWeekAgo.toISOString().split("T")[0];
-
-const lastWeekArrivals = combinedArrivals.filter(
-  arrival => arrival.arrivalDate === formattedLastWeek &&
-  carrierCodes.includes(arrival.icao)
-);
-
-const arrivalsWowPercentageChange = ((filteredArrivals.length / lastWeekArrivals.length) - 1) * 100;
-
-const filteredHistoricalArrivals = combinedArrivals.filter(arrival => carrierCodes.includes(arrival.icao));
-
-const arrivalsByDate = filteredHistoricalArrivals.reduce((acc, arrival) => {
-  acc[arrival.arrivalDate] = (acc[arrival.arrivalDate] || 0) + 1;
-  return acc;
-}, {});
-
-const todaysArrivals = {
-  date: todaysDate,
-  arrivals: filteredArrivals.length
-};
-
-const arrivalSparklineData = Object.keys(arrivalsByDate)
-  .sort()
-  .map(date => ({ date, arrivals: arrivalsByDate[date] }));
-arrivalSparklineData.push(todaysArrivals);
-
-
-const arrivalSparkline = Plot.plot({
-  style: {
-    display: "inline-block",
-    marginBottom: -1,
-    overflow: "visible",
-    zIndex: 2,
-    position: "relative"
-  },
-  x: { axis: null, type: "point" },
-  y: { axis: null },
-  width: 150,
-  height: 75,
-  margin: 1,
-  marks: [
-    Plot.areaY(arrivalSparklineData, { x: "date", y: "arrivals", fillOpacity: 0.1}),
-    Plot.lineY(arrivalSparklineData, { x: "date", y: "arrivals", tip: true})
-  ]
-});
-return {historicalArrivals,combinedArrivals,oneWeekAgo,formattedLastWeek,lastWeekArrivals,arrivalsWowPercentageChange,filteredHistoricalArrivals,arrivalsByDate,todaysArrivals,arrivalSparklineData,arrivalSparkline};
-}});
-
-define({id: "2a551b63", inputs: ["getData","formattedLastWeek","carrierCodes","filteredDepartures","todaysDate","Plot"], outputs: ["historicalDepartures","combinedDepartures","lastWeekDepartures","departuresWowPercentageChange","filteredHistoricalDepartures","departuresByDate","todaysDepartures","departureSparklineData","departureSparkline"], body: async (getData,formattedLastWeek,carrierCodes,filteredDepartures,todaysDate,Plot) => {
-const historicalDepartures = await getData("https://raw.githubusercontent.com/bradfordjohnson/kchs/refs/heads/master/data/departures.json");
-
-const combinedDepartures = Object.values(historicalDepartures).flat(2);
-
-const lastWeekDepartures = combinedDepartures.filter(
-  departure => departure.departureDate === formattedLastWeek &&
-  carrierCodes.includes(departure.icao)
-);
-
-const departuresWowPercentageChange = ((filteredDepartures.length / lastWeekDepartures.length) - 1) * 100;
-
-const filteredHistoricalDepartures = combinedDepartures.filter(departure => carrierCodes.includes(departure.icao));
-
-const departuresByDate = filteredHistoricalDepartures.reduce((acc, departure) => {
-  acc[departure.departureDate] = (acc[departure.departureDate] || 0) + 1;
-  return acc;
-}, {});
-
-const todaysDepartures = {
-  date: todaysDate,
-  departures: filteredDepartures.length
-};
-
-const departureSparklineData = Object.keys(departuresByDate)
-  .sort()
-  .map(date => ({ date, departures: departuresByDate[date] }));
-departureSparklineData.push(todaysDepartures);
-
-const departureSparkline = Plot.plot({
-  style: {
-    display: "inline-block",
-    marginBottom: -1,
-    overflow: "visible",
-    zIndex: 2,
-    position: "relative"
-  },
-  x: { axis: null, type: "point" },
-  y: { axis: null },
-  width: 150,
-  height: 75,
-  margin: 1,
-  marks: [
-    Plot.areaY(departureSparklineData, { x: "date", y: "departures", fillOpacity: 0.1}),
-    Plot.lineY(departureSparklineData, { x: "date", y: "departures", tip: true})
-  ]
-});
-return {historicalDepartures,combinedDepartures,lastWeekDepartures,departuresWowPercentageChange,filteredHistoricalDepartures,departuresByDate,todaysDepartures,departureSparklineData,departureSparkline};
-}});
-
-define({id: "a5d4d7c8", inputs: ["display","chsGatePlanes"], outputs: ["L","div","map","early","late","hidden"], body: async (display,chsGatePlanes) => {
-const L = await import("./_npm/leaflet@1.9.4/d8a0af43.js");
-
-const div = display(document.createElement("div"));
-div.style = "height: 450px;";
-
-
-
-const map = L.map(div,  { zoomControl: true, scrollWheelZoom: false, dragging: true })
-  .setView([32.885636, -80.036886], 18);
-
-L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
-  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
-})
-  .addTo(map);
-
-// Object.entries(chsGates).forEach(([gate, coords]) => {
-//   L.circle(coords, {
-//     radius:  4,
-//     color: "green"
-//   })
-//   .addTo(map)
-//   .bindPopup(`<b>Gate: ${gate}</b>`);
-// });
-
-// var svgElement = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-// svgElement.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="294.728 -842.512 1642 1515">
-// 	<path d="m1908.1019-252.4527q-67.6116-54.7508-277.1752-32.7248l-337.552 35.4781-489.7581-580.6049-4.0336-4.5531q-10.88-8.8105-23.5382-7.48L686.031-832.8766q-12.6582 1.3304-21.4687 12.2105-13.2157 16.3201-4.2618 33.8651L934.7258-212.0038 590.1416-175.7867Q447.9746-378.4109 437.0945-387.2213 426.2146-396.0319 413.5563-394.7013L323.5426-385.2405Q310.8843-383.9101 302.0738-373.0301 290.746-359.0415 296.8871-341.2008L416.9433-44.5335 361.1913 270.612q-3.7041 18.8754 11.0617 30.8324 10.88 8.8105 23.5382 7.48l90.791-8.8315q12.6582-1.3304 21.4687-12.2105 8.8105-10.88 105.7428-238.6345L958.3778 13.0307 809.4566 632.3235q-5.1106 19.0232 11.2095 32.239 10.88 8.8105 23.5382 7.48l90.0139-9.4608q12.6582-1.3304 21.4687-12.2105 2.5174-3.1085 2.9988-5.2923l358.3411-669.7437 337.552-35.4781q209.5635-22.0259 264.3143-89.6377 20.1382-24.8686 17.1077-53.7012-3.0304-28.8326-27.8992-48.9709z" fill="#000000"/>
-// </svg>`;
-// var svgElementBounds = [ [ 32.885238,-80.03826], [32.884713,-80.038016 ] ];
-// L.svgOverlay(svgElement, svgElementBounds).addTo(map);
-
-const early = ["A1", "B2"];
-const late = ["B9", "B10"];
-const hidden = ["A2A"];
-Object.entries(chsGatePlanes).forEach(([key, { svg, bounds }]) => {
-  var svgElement = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-  svgElement.innerHTML = svg;
-  svgElement.classList.add(`plane-${key}`);
-
-  // If the key is in the 'early' list, change fill to green
-  if (early.includes(key)) {
-    svgElement.querySelectorAll("path").forEach(path => {
-      path.setAttribute("fill", "#50C878");
-    });
+  if (!arrivalData) {
+    console.error("No arrival data available");
+    return;
   }
 
-  if (late.includes(key)) {
-    svgElement.querySelectorAll("path").forEach(path => {
-      path.setAttribute("fill", "#880808");
-    });
+  const arrivals = filterFlights(arrivalData, "arrival", airlines);
+
+  const departureData = await getData(
+    "https://ccaafids.azurewebsites.net/api/FIDsTest?code=VnSepGuKSiEXD0zW_eOg73NkKKgyT_jDIZOm8pvuCbs8AzFuNZG1RA==&dir=departure"
+  );
+
+  if (!departureData) {
+    console.error("No departure data available");
+    return;
   }
 
-  if (hidden.includes(key)) {
-    svgElement.style.display = "none"; // Completely hides the SVG
-  }
+  const departures = filterFlights(departureData, "departure", airlines);
 
-  L.svgOverlay(svgElement, bounds).addTo(map);
-});
+  // mapping data
+  const mapData = (flight, type) => {
+    const airline = airlines.find(
+      (airline) => airline.code === flight.carrierCode?.iata
+    );
 
+    const statusDetails = flight.statusDetails?.[0];
+    const statusObj = statusDetails
+      ? type === "arrival"
+        ? statusDetails.arrival
+        : statusDetails.departure
+      : null;
 
-return {L,div,map,early,late,hidden};
+    const timeliness = statusDetails
+      ? type === "arrival"
+        ? statusDetails.arrival.estimatedTime.inGateTimeliness
+        : statusDetails.departure.estimatedTime.outGateTimeliness
+      : null;
+
+    const city = statusDetails
+      ? type === "arrival"
+        ? statusDetails.departure.airport.iata
+        : statusDetails?.arrival.airport.iata
+      : null;
+
+    const cityName = locations.find((location) => location.code === city)?.name;
+
+    return {
+      airlineName: airline ? airline.name : null,
+      flightNumber: flight.flightNumber || null,
+      city: cityName,
+      timeliness: timeliness,
+      aircraftRegistrationNumber:
+        statusDetails.equipment.aircraftRegistrationNumber,
+      aircraftType: statusDetails.equipment.actualAircraftType.icao,
+      gate: statusObj.gate,
+      status: statusObj,
+      type,
+    };
+  };
+
+  const combinedFlights = [
+    ...arrivals.map((flight) => mapData(flight, "arrival")),
+    ...departures.map((flight) => mapData(flight, "departure")),
+  ];
+
+  const totalFlights = combinedFlights.length;
+  document.getElementById("totalFlights").innerText = `${totalFlights}`;
+
+  const totalArrivals = combinedFlights.filter(
+    (flight) => flight.type === "arrival"
+  ).length;
+  document.getElementById("totalArrivals").innerText = `${totalArrivals}`;
+
+  const totalDepartures = combinedFlights.filter(
+    (flight) => flight.type === "departure"
+  ).length;
+  document.getElementById("totalDepartures").innerText = `${totalDepartures}`;
+
+  // airline chart
+  const airlineFlightTypeStackedHorizontalBar = Plot.plot({
+    marginLeft: 90,
+    x: { label: "Flights" },
+    y: { label: null },
+    fx: { label: null },
+    marks: [
+      Plot.barX(
+        combinedFlights,
+        Plot.groupY(
+          { x: "count" },
+          {
+            fx: "type",
+            fill: "type",
+            y: "airlineName",
+            sort: { y: "x", reverse: true },
+            tip: true,
+          }
+        )
+      ),
+    ],
+  });
+
+  document
+    .getElementById("airlinesByFlightType")
+    .appendChild(airlineFlightTypeStackedHorizontalBar);
+
+  const airlineFlightTypeAndTimelinessStackedHorizontalBar = Plot.plot({
+    marginLeft: 90,
+    x: { label: "Flights" },
+    color: {
+      scheme: "category10",
+      legend: true,
+      domain: ["OnTime", "Delayed", "Early"],
+    },
+    y: { label: null },
+    fx: { label: null },
+    marks: [
+      Plot.barX(
+        combinedFlights,
+        Plot.groupY(
+          { x: "count" },
+          {
+            fx: "type",
+            fill: "timeliness",
+            y: "airlineName",
+            sort: { y: "x", reverse: true },
+            tip: true,
+          }
+        )
+      ),
+    ],
+  });
+
+  document
+    .getElementById("airlinesByFlightTypeAndTimeliness")
+    .appendChild(airlineFlightTypeAndTimelinessStackedHorizontalBar);
+
+  // display(combinedFlights);
+  // display(arrivals);
+}
+
+fetchFlightData();
+return {Plot,airlines,locations,getData,filterFlights,fetchFlightData};
 }});
 
 </script>
@@ -315,6 +770,8 @@ return {L,div,map,early,late,hidden};
     <li class="observablehq-link observablehq-link-active"><a href="./">Charleston International Airport</a></li>
   </ol>
   <ol>
+    <li class="observablehq-link"><a href="./about">About</a></li>
+    <li class="observablehq-link"><a href="./gate-map">Gate Map</a></li>
     <li class="observablehq-link"><a href="./helper-functions">Helper Functions / Constants</a></li>
     <li class="observablehq-link"><a href="./raw-flights">Raw Flights</a></li>
     <li class="observablehq-link"><a href="./update-loop">Update Loop</a></li>
@@ -323,69 +780,40 @@ return {L,div,map,early,late,hidden};
 <script>{const e=document.querySelector("#observablehq-sidebar"),o=document.querySelector("#observablehq-sidebar-toggle"),r=sessionStorage.getItem("observablehq-sidebar");r?o.checked=r==="true":o.indeterminate=!0;for(const t of document.querySelectorAll("#observablehq-sidebar summary")){const s=t.parentElement;switch(sessionStorage.getItem(`observablehq-sidebar:${t.textContent}`)){case"true":s.open=!0;break;case"false":s.classList.contains("observablehq-section-active")||(s.open=!1);break}}addEventListener("beforeunload",()=>sessionStorage.setItem("observablehq-sidebar-scrolly",`${e.scrollTop}`));const a=sessionStorage.getItem("observablehq-sidebar-scrolly");a!=null&&(e.style.cssText="overflow: hidden;",e.scrollTop=+a,e.style.cssText="");}</script>
 <div id="observablehq-center">
 <main id="observablehq-main" class="observablehq">
+<!-- markdownlint-disable -->
 <h1 id="charleston-international-airport" tabindex="-1"><a class="observablehq-header-anchor" href="#charleston-international-airport">Charleston International Airport</a></h1>
-<p><a href="https://github.com/bradfordjohnson/kchs/actions/workflows/etl-flight-data.yaml" target="_blank" rel="noopener noreferrer"><img src="https://github.com/bradfordjohnson/kchs/actions/workflows/etl-flight-data.yaml/badge.svg" alt="ETL Flight Data"></a>
-<a href="https://github.com/bradfordjohnson/kchs/actions/workflows/dashboard-deploy.yml" target="_blank" rel="noopener noreferrer"><img src="https://github.com/bradfordjohnson/kchs/actions/workflows/dashboard-deploy.yml/badge.svg" alt="Deploy dashboard to Pages"></a></p>
-<p>Built with Observable Framework, this dashboard provides a dynamic, data-driven view of Charleston International Airport (KCHS) flight activity. It combines JavaScript-powered visuals, data mapping and fetching with a Python-based ETL pipeline that collects daily flight snapshots for historical views.</p>
-<h2 id="features" tabindex="-1"><a class="observablehq-header-anchor" href="#features">Features</a></h2>
-<ul>
-<li>Daily flight metrics and trends for arrivals and departures
-<ul>
-<li>WoW delta comparisons</li>
-</ul>
-</li>
-<li>Arrivals and departures "boards", showing flights, statuses, and more.</li>
-</ul>
-<h3 id="features-in-development" tabindex="-1"><a class="observablehq-header-anchor" href="#features-in-development">Features in development</a></h3>
-<ul>
-<li>Live gate map – a Leaflet-based gate map with SVG plane overlays to track &amp; visualize real-time in-gate performance</li>
-<li>Main interactive dashboard page with historical and live data
-<ul>
-<li>dimensional filters, metric performance and trends</li>
-</ul>
-</li>
-</ul>
-<h3 id="todo" tabindex="-1"><a class="observablehq-header-anchor" href="#todo">TODO</a></h3>
-<ul>
-<li>Create data model and logic to determine what flights are in the gate at a given time</li>
-</ul>
-<hr>
-<h2 id="todays-flights" tabindex="-1"><a class="observablehq-header-anchor" href="#todays-flights">Today's Flights</a></h2>
-<!-- <div class="chip-description">
-  <div class="chip-caption">
-  See page:
-  </div>
-  <a href="/arrivals" class="chip">
-  Arrivals
-  </a>
-  <a href="/departures" class="chip">
-  Departures
-  </a>
-</div> -->
-<div class="observablehq observablehq--block"><!--:52cf6696:--></div>
-<div class="observablehq observablehq--block"><!--:c4a984e5:--></div>
+<div class="observablehq observablehq--block"><!--:5f588f40:--></div>
 <div class="grid grid-cols-4" style="grid-auto-rows: auto;">
   <div class="card">
-    <h2>Arrivals</h2>
-    <span class="big"><observablehq-loading></observablehq-loading><!--:b6dc4393:--></span>
-    <span class="small"><observablehq-loading></observablehq-loading><!--:b1c49502:-->% WoW Δ</span>
-    <br>
-    <span><observablehq-loading></observablehq-loading><!--:e7f0e3f0:--></span>
+    <h2>Scheduled Flights Today</h2>
+    <span class="big" id="totalFlights"></span>
+  </div>
+<!-- </div>
+<div class="grid grid-cols-4" style="grid-auto-rows: auto;"> -->
+  <div class="card">
+    <h2>Scheduled Arrivals</h2>
+    <span class="big" id="totalArrivals"></span>
   </div>
   <div class="card">
-    <h2>Departures</h2>
-    <span class="big"><observablehq-loading></observablehq-loading><!--:58cc44fe:--></span>
-    <span class="small"><observablehq-loading></observablehq-loading><!--:690fccba:-->% WoW Δ</span>
-    <br>
-    <span><observablehq-loading></observablehq-loading><!--:aa732f1e:--></span>
+    <h2>Scheduled Departures</h2>
+    <span class="big" id="totalDepartures"></span>
   </div>
 </div>
-<div class="observablehq observablehq--block"><!--:952072bf:--></div>
-<div class="observablehq observablehq--block"><!--:2a551b63:--></div>
-<div class="observablehq observablehq--block"><!--:a5d4d7c8:--></div>
+<div class="grid grid-cols-2">
+  <div class="card" style="display: flex; flex-direction: column; gap: 1rem;">
+  <h2>Flights by Airline and Type</h2>
+  <span id="airlinesByFlightType"></span>
+  </div>
+</div>
+<div class="grid grid-cols-2">
+  <div class="card" style="display: flex; flex-direction: column; gap: 1rem;">
+  <h2>Flights by Airline, Timeliness and Type</h2>
+  <span id="airlinesByFlightTypeAndTimeliness"></span>
+  </div>
+</div>
 </main>
 <footer id="observablehq-footer">
-<div>Built with <a href="https://observablehq.com/" target="_blank" rel="noopener noreferrer">Observable</a> on <a title="2025-03-08T09:37:20">Mar 8, 2025</a>.</div>
+<div>Built with <a href="https://observablehq.com/" target="_blank" rel="noopener noreferrer">Observable</a> on <a title="2025-03-08T15:46:33">Mar 8, 2025</a>.</div>
 </footer>
 </div>
 </body>
