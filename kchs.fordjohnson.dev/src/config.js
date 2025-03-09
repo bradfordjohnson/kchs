@@ -3,7 +3,7 @@ export const API_CONFIG = {
     arrivalUrl: "https://ccaafids.azurewebsites.net/api/FIDsTest?code=VnSepGuKSiEXD0zW_eOg73NkKKgyT_jDIZOm8pvuCbs8AzFuNZG1RA==&dir=arrival"
   };
 
-export const carrierCodes = ['AAL', 'MXY', 'DAL', 'JBU', 'SWA', 'NKS', 'UAL'];
+export const carrierCodes = ['AAL', 'MXY', 'DAL', 'JBU', 'SWA', 'NKS', 'UAL', 'ASA', 'AAY', 'VXP', 'FFT', 'SIL', 'SCX', 'ACA'];
 
 export const todaysDate = new Date().toISOString().slice(0, 10);
 

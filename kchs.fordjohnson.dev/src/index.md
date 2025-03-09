@@ -8,58 +8,72 @@ import * as Plot from "npm:@observablehq/plot";
 const airlines = [
   {
     code: "AA",
+    icao: "AAL",
     name: "American Airlines",
   },
   {
     code: "AS",
+    icao: "ASA",
     name: "Alaska",
   },
   {
     code: "G4",
+    icao: "AAY",
     name: "Allegiant",
   },
   {
     code: "XP",
+    icao: "VXP",
     name: "Avelo",
   },
   {
     code: "MX",
+    icao: "MXY",
     name: "Breeze Airways",
   },
   {
     code: "DL",
+    icao: "DAL",
     name: "Delta",
   },
   {
     code: "F9",
+    icao: "FFT",
     name: "Frontier",
   },
   {
     code: "B6",
+    icao: "JBU",
     name: "JetBlue",
   },
   {
     code: "3M",
+    icao: "SIL",
     name: "Silver",
   },
   {
     code: "WN",
+    icao: "SWA",
     name: "Southwest",
   },
   {
     code: "SY",
+    icao: "SCX",
     name: "Sun Country",
   },
   {
     code: "UA",
+    icao: "UAL",
     name: "United Airlines",
   },
   {
     code: "NK",
+    icao: "NKS",
     name: "Spirit",
   },
   {
     code: "AC",
+    icao: "ACA",
     name: "Air Canada",
   },
 ];
@@ -640,22 +654,22 @@ async function fetchFlightData() {
   document.getElementById("totalDepartures").innerText = `${totalDepartures}`;
 
   // airline chart
-  const airlineFlightTypeStackedHorizontalBar = Plot.plot({
-    marginLeft: 90,
-    x: { label: "Flights" },
-    y: { label: null },
+  const airlineFlightTypeStackedBar = Plot.plot({
+    marginBottom: 60,
+    x: { label: null, tickRotate: -30 },
+    y: { label: "Flights" },
     fx: { label: null },
     // color: { legend: true },
     marks: [
-      Plot.barX(
+      Plot.barY(
         combinedFlights,
-        Plot.groupY(
-          { x: "count" },
+        Plot.groupX(
+          { y: "count" },
           {
             // fx: "type",
             fill: "type",
-            y: "airlineName",
-            sort: { y: "x", reverse: true },
+            x: "airlineName",
+            sort: { x: "y", reverse: true },
             tip: true,
           }
         )
@@ -665,28 +679,24 @@ async function fetchFlightData() {
 
   document
     .getElementById("airlinesByFlightType")
-    .appendChild(airlineFlightTypeStackedHorizontalBar);
+    .appendChild(airlineFlightTypeStackedBar);
 
-  const airlineFlightTypeAndTimelinessStackedHorizontalBar = Plot.plot({
-    marginLeft: 90,
-    x: { label: "Flights" },
-    color: {
-      scheme: "category10",
-      // legend: true,
-      domain: ["OnTime", "Delayed", "Early"],
-    },
-    y: { label: null },
-    // fx: { label: null },
+  const airlineFlightTypeAndTimelinessStackedBar = Plot.plot({
+    marginBottom: 60,
+    x: { label: null, tickRotate: -30 },
+    y: { label: "Flights" },
+    fx: { label: null },
+    color: { domain: ["OnTime", "Delayed", "Early"], scheme: "category10" },
     marks: [
-      Plot.barX(
+      Plot.barY(
         combinedFlights,
-        Plot.groupY(
-          { x: "count" },
+        Plot.groupX(
+          { y: "count" },
           {
-            // fx: "type",
+            x: "airlineName",
+            // fy: "gate",
             fill: "timeliness",
-            y: "airlineName",
-            sort: { y: "x", reverse: true },
+            sort: { x: "y", reverse: true },
             tip: true,
           }
         )
@@ -696,9 +706,9 @@ async function fetchFlightData() {
 
   document
     .getElementById("airlinesByFlightTypeAndTimeliness")
-    .appendChild(airlineFlightTypeAndTimelinessStackedHorizontalBar);
+    .appendChild(airlineFlightTypeAndTimelinessStackedBar);
 
-  const flightsTimelinessStackedHorizontalBar = Plot.barY(
+  const flightsTimelinessStackedBar = Plot.barY(
     combinedFlights,
 
     Plot.groupX(
@@ -718,18 +728,17 @@ async function fetchFlightData() {
 
   document
     .getElementById("flightsTimeliness")
-    .appendChild(flightsTimelinessStackedHorizontalBar);
-    
+    .appendChild(flightsTimelinessStackedBar);
 
   // display(combinedFlights);
-  // display(arrivals);
+  display(arrivals);
 }
 
 fetchFlightData();
 ```
 
 <div class="grid grid-cols-4" style="grid-auto-rows: auto;">
-  <div class="card grid-colspan-2">
+  <div class="card">
     <h2>Scheduled Flights Today</h2>
     <span class="big" id="totalFlights"></span>
   </div>
@@ -756,3 +765,89 @@ fetchFlightData();
   </div>
   
 </div>
+
+```js
+import { carrierCodes } from "./config.js";
+
+async function getHistData(url) {
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error(`Response status: ${response.status}`);
+    }
+    return await response.json();
+  } catch (error) {
+    console.error(error.message);
+  }
+}
+
+const historicalArrivals = await getHistData("https://raw.githubusercontent.com/bradfordjohnson/kchs/refs/heads/master/data/arrivals.json");
+
+const historicalDepartures = await getHistData("https://raw.githubusercontent.com/bradfordjohnson/kchs/refs/heads/master/data/departures.json");
+
+const histArrivals = Object.values(historicalArrivals).flat(2).map(entry => ({
+  ...entry,
+  type: 'arrival'
+}));
+
+const histDepartures = Object.values(historicalDepartures).flat(2).map(entry => ({
+  ...entry,
+  type: 'departure'
+}));
+
+const combinedHistoricalFlights = [...histArrivals, ...histDepartures];
+
+const airlineLookup = Object.fromEntries(
+  airlines.map(airline => [airline.icao, airline])
+);
+
+const filteredHistoricalFlights = combinedHistoricalFlights.filter(
+flight => airlineLookup[flight.icao]
+);
+
+// need to map historical data like the current data
+  // const mapData = (flight, type) => {
+  //   const airline = airlines.find(
+  //     (airline) => airline.code === flight.carrierCode?.iata
+  //   );
+
+  //   const statusDetails = flight.statusDetails?.[0];
+  //   const statusObj = statusDetails
+  //     ? type === "arrival"
+  //       ? statusDetails.arrival
+  //       : statusDetails.departure
+  //     : null;
+
+  //   const timeliness = statusDetails
+  //     ? type === "arrival"
+  //       ? statusDetails.arrival.estimatedTime.inGateTimeliness
+  //       : statusDetails.departure.estimatedTime.outGateTimeliness
+  //     : null;
+
+  //   const city = statusDetails
+  //     ? type === "arrival"
+  //       ? statusDetails.departure.airport.iata
+  //       : statusDetails?.arrival.airport.iata
+  //     : null;
+
+  //   const cityName = locations.find((location) => location.code === city)?.name;
+
+  //   return {
+  //     airlineName: airline ? airline.name : null,
+  //     flightNumber: flight.flightNumber || null,
+  //     city: cityName,
+  //     timeliness: timeliness,
+  //     aircraftRegistrationNumber:
+  //       statusDetails.equipment.aircraftRegistrationNumber,
+  //     aircraftType: statusDetails.equipment.actualAircraftType.icao,
+  //     gate: statusObj.gate,
+  //     status: statusObj,
+  //     type,
+  //   };
+  // };
+
+
+display(filteredHistoricalFlights)
+
+
+```
