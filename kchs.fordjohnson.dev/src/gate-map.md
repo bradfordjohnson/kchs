@@ -1,7 +1,8 @@
-<!-- markdownlint-disable -->
 ---
 style: custom-style.css
 ---
+
+<!-- markdownlint-disable -->
 
 # Gate Map
 

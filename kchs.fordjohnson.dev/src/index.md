@@ -645,13 +645,14 @@ async function fetchFlightData() {
     x: { label: "Flights" },
     y: { label: null },
     fx: { label: null },
+    // color: { legend: true },
     marks: [
       Plot.barX(
         combinedFlights,
         Plot.groupY(
           { x: "count" },
           {
-            fx: "type",
+            // fx: "type",
             fill: "type",
             y: "airlineName",
             sort: { y: "x", reverse: true },
@@ -671,18 +672,18 @@ async function fetchFlightData() {
     x: { label: "Flights" },
     color: {
       scheme: "category10",
-      legend: true,
+      // legend: true,
       domain: ["OnTime", "Delayed", "Early"],
     },
     y: { label: null },
-    fx: { label: null },
+    // fx: { label: null },
     marks: [
       Plot.barX(
         combinedFlights,
         Plot.groupY(
           { x: "count" },
           {
-            fx: "type",
+            // fx: "type",
             fill: "timeliness",
             y: "airlineName",
             sort: { y: "x", reverse: true },
@@ -697,6 +698,29 @@ async function fetchFlightData() {
     .getElementById("airlinesByFlightTypeAndTimeliness")
     .appendChild(airlineFlightTypeAndTimelinessStackedHorizontalBar);
 
+  const flightsTimelinessStackedHorizontalBar = Plot.barY(
+    combinedFlights,
+
+    Plot.groupX(
+      { y: "count" },
+      {
+        x: "gate",
+        // fy: "gate",
+        fill: "timeliness",
+        sort: { x: "y", reverse: true },
+        tip: true,
+      }
+    )
+  ).plot({
+    color: { domain: ["OnTime", "Delayed", "Early"], scheme: "category10" },
+    y: { label: "Flights" },
+  });
+
+  document
+    .getElementById("flightsTimeliness")
+    .appendChild(flightsTimelinessStackedHorizontalBar);
+    
+
   // display(combinedFlights);
   // display(arrivals);
 }
@@ -705,13 +729,10 @@ fetchFlightData();
 ```
 
 <div class="grid grid-cols-4" style="grid-auto-rows: auto;">
-  <div class="card">
+  <div class="card grid-colspan-2">
     <h2>Scheduled Flights Today</h2>
     <span class="big" id="totalFlights"></span>
   </div>
-<!-- </div>
-
-<div class="grid grid-cols-4" style="grid-auto-rows: auto;"> -->
 
   <div class="card">
     <h2>Scheduled Arrivals</h2>
@@ -722,21 +743,16 @@ fetchFlightData();
     <span class="big" id="totalDepartures"></span>
   </div>
 
-</div>
-
-<div class="grid grid-cols-2">
-
-  <div class="card" style="display: flex; flex-direction: column; gap: 1rem;">
-  <h2>Flights by Airline and Type</h2>
+  <div class="card grid-colspan-2" style="display: flex; flex-direction: column; gap: 1rem;">
   <span id="airlinesByFlightType"></span>
   </div>
 
-</div>
-
-<div class="grid grid-cols-2">
-  <div class="card" style="display: flex; flex-direction: column; gap: 1rem;">
-  <h2>Flights by Airline, Timeliness and Type</h2>
+  <div class="card grid-colspan-2" style="display: flex; flex-direction: column; gap: 1rem;">
   <span id="airlinesByFlightTypeAndTimeliness"></span>
+  </div>
+
+  <div class="card grid-colspan-2" style="display: flex; flex-direction: row; gap: 1rem;">
+  <span id="flightsTimeliness"></span>
   </div>
   
 </div>
