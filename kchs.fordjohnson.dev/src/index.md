@@ -6,524 +6,636 @@
 import * as Plot from "npm:@observablehq/plot";
 
 const airlines = [
-  {
-    code: "AA",
-    icao: "AAL",
-    name: "American Airlines",
-  },
-  {
-    code: "AS",
-    icao: "ASA",
-    name: "Alaska",
-  },
-  {
-    code: "G4",
-    icao: "AAY",
-    name: "Allegiant",
-  },
-  {
-    code: "XP",
-    icao: "VXP",
-    name: "Avelo",
-  },
-  {
-    code: "MX",
-    icao: "MXY",
-    name: "Breeze Airways",
-  },
-  {
-    code: "DL",
-    icao: "DAL",
-    name: "Delta",
-  },
-  {
-    code: "F9",
-    icao: "FFT",
-    name: "Frontier",
-  },
-  {
-    code: "B6",
-    icao: "JBU",
-    name: "JetBlue",
-  },
-  {
-    code: "3M",
-    icao: "SIL",
-    name: "Silver",
-  },
-  {
-    code: "WN",
-    icao: "SWA",
-    name: "Southwest",
-  },
-  {
-    code: "SY",
-    icao: "SCX",
-    name: "Sun Country",
-  },
-  {
-    code: "UA",
-    icao: "UAL",
-    name: "United Airlines",
-  },
-  {
-    code: "NK",
-    icao: "NKS",
-    name: "Spirit",
-  },
-  {
-    code: "AC",
-    icao: "ACA",
-    name: "Air Canada",
-  },
+    {
+      code: "AA",
+      icao: "AAL",
+      name: "American Airlines",
+    },
+    {
+      code: "AS",
+      icao: "ASA",
+      name: "Alaska",
+    },
+    {
+      code: "G4",
+      icao: "AAY",
+      name: "Allegiant",
+    },
+    {
+      code: "XP",
+      icao: "VXP",
+      name: "Avelo",
+    },
+    {
+      code: "MX",
+      icao: "MXY",
+      name: "Breeze Airways",
+    },
+    {
+      code: "DL",
+      icao: "DAL",
+      name: "Delta",
+    },
+    {
+      code: "F9",
+      icao: "FFT",
+      name: "Frontier",
+    },
+    {
+      code: "B6",
+      icao: "JBU",
+      name: "JetBlue",
+    },
+    {
+      code: "3M",
+      icao: "SIL",
+      name: "Silver",
+    },
+    {
+      code: "WN",
+      icao: "SWA",
+      name: "Southwest",
+    },
+    {
+      code: "SY",
+      icao: "SCX",
+      name: "Sun Country",
+    },
+    {
+      code: "UA",
+      icao: "UAL",
+      name: "United Airlines",
+    },
+    {
+      code: "NK",
+      icao: "NKS",
+      name: "Spirit",
+    },
+    {
+      code: "AC",
+      icao: "ACA",
+      name: "Air Canada",
+    },
 ];
-
-const locations = [
-  {
-    code: "CHS",
-    name: "Charleston",
-  },
-  {
-    code: "ATL",
-    name: "Atlanta",
-  },
-  {
-    code: "SEA",
-    name: "Seattle",
-  },
-  {
-    code: "CVG",
-    name: "Cincinnati",
-  },
-  {
-    code: "LCK",
-    name: "Columbus",
-  },
-  {
-    code: "IND",
-    name: "Indianapolis",
-  },
-  {
-    code: "SDF",
-    name: "Louisville",
-  },
-  {
-    code: "PIT",
-    name: "Pittsburgh",
-  },
-  {
-    code: "BLV",
-    name: "St. Louis",
-  },
-  {
-    code: "CLT",
-    name: "Charlotte",
-  },
-  {
-    code: "ORD",
-    name: "Chicago",
-  },
-  {
-    code: "DFW",
-    name: "Dallas/Forth Worth",
-  },
-  {
-    code: "PHL",
-    name: "Philadelphia",
-  },
-  {
-    code: "MIA",
-    name: "Miami",
-  },
-  {
-    code: "DCA",
-    name: "Washington, D.C.",
-  },
-  {
-    code: "HVN",
-    name: "New Haven",
-  },
-  {
-    code: "CAK",
-    name: "Akron/Canton",
-  },
-  {
-    code: "CMH",
-    name: "Columbus",
-  },
-  {
-    code: "RSW",
-    name: "Fort Myers",
-  },
-  {
-    code: "BDL",
-    name: "Hartford",
-  },
-  {
-    code: "ISP",
-    name: "Islip",
-  },
-  {
-    code: "LAS",
-    name: "Las Vegas",
-  },
-  {
-    code: "SDF",
-    name: "Louisville",
-  },
-  {
-    code: "MSY",
-    name: "New Orleans",
-  },
-  {
-    code: "ORF",
-    name: "Norfolk",
-  },
-  {
-    code: "MCO",
-    name: "Orlando",
-  },
-  {
-    code: "PFD",
-    name: "Providence",
-  },
-  {
-    code: "RIC",
-    name: "Richmond",
-  },
-  {
-    code: "SFO",
-    name: "San Francisco",
-  },
-  {
-    code: "SYR",
-    name: "Syracuse",
-  },
-  {
-    code: "TPA",
-    name: "Tampa",
-  },
-  {
-    code: "HPN",
-    name: "Westchester, NY",
-  },
-  {
-    code: "PBI",
-    name: "West Palm Beach",
-  },
-  {
-    code: "BOS",
-    name: "Boston",
-  },
-  {
-    code: "DTW",
-    name: "Detroit",
-  },
-  {
-    code: "LGA",
-    name: "New York City",
-  },
-  {
-    code: "JFK",
-    name: "New York City",
-  },
-  {
-    code: "MSP",
-    name: "Minneapolis",
-  },
-  {
-    code: "DEN",
-    name: "Denver",
-  },
-  {
-    code: "FLL",
-    name: "Fort Lauderdale",
-  },
-  {
-    code: "LAX",
-    name: "Los Angeles",
-  },
-  {
-    code: "AUS",
-    name: "Austin",
-  },
-  {
-    code: "BWI",
-    name: "Baltimore",
-  },
-  {
-    code: "MDW",
-    name: "Chicago",
-  },
-  {
-    code: "DAL",
-    name: "Dallas",
-  },
-  {
-    code: "HOU",
-    name: "Houston",
-  },
-  {
-    code: "MCI",
-    name: "Kansas City",
-  },
-  {
-    code: "BNA",
-    name: "Nashville",
-  },
-  {
-    code: "STL",
-    name: "St. Louis",
-  },
-  {
-    code: "IAH",
-    name: "Houston",
-  },
-  {
-    code: "EWR",
-    name: "Newark",
-  },
-  {
-    code: "IAD",
-    name: "Washington, D.C.",
-  },
-  {
-    code: "PNS",
-    name: "Pensacola",
-  },
-  {
-    code: "SAT",
-    name: "San Antonio",
-  },
-  {
-    code: "COS",
-    name: "Colorado Springs",
-  },
-  {
-    code: "PHX",
-    name: "Phoenix",
-  },
-  {
-    code: "PVD",
-    name: "Providence",
-  },
-  {
-    code: "PVU",
-    name: "Provo",
-  },
-  {
-    code: "TYS",
-    name: "Jacksonville",
-  },
-  {
-    code: "ABE",
-    name: "Allentown",
-  },
-  {
-    code: "OMA",
-    name: "Omaha",
-  },
-  {
-    code: "TRI",
-    name: "Bristol/Johnson/Kingsp",
-  },
-  {
-    code: "ABQ",
-    name: "Albuquerque",
-  },
-  {
-    code: "ALB",
-    name: "Albany",
-  },
-  {
-    code: "BHM",
-    name: "Birmingham",
-  },
-  {
-    code: "BRL",
-    name: "Burlington",
-  },
-  {
-    code: "BTR",
-    name: "Baton Rouge",
-  },
-  {
-    code: "BUF",
-    name: "Buffalo",
-  },
-  {
-    code: "CAE",
-    name: "Columbia",
-  },
-  {
-    code: "CID",
-    name: "Cedar Rapids",
-  },
-  {
-    code: "CLE",
-    name: "Cleveland",
-  },
-  {
-    code: "CRP",
-    name: "Corpus Christi",
-  },
-  {
-    code: "DAY",
-    name: "Dayton",
-  },
-  {
-    code: "DSM",
-    name: "Des Moines",
-  },
-  {
-    code: "ELP",
-    name: "El Paso",
-  },
-  {
-    code: "EVV",
-    name: "Evansville",
-  },
-  {
-    code: "FWA",
-    name: "Fort Wayne",
-  },
-  {
-    code: "GRR",
-    name: "Grand Rapids",
-  },
-  {
-    code: "GSO",
-    name: "Greensboro/High Point",
-  },
-  {
-    code: "GSP",
-    name: "Greenville/Spartanburg",
-  },
-  {
-    code: "HSV",
-    name: "Huntsville",
-  },
-  {
-    code: "JAX",
-    name: "Jacksonville",
-  },
-  {
-    code: "LFT",
-    name: "Lafayette",
-  },
-  {
-    code: "LIT",
-    name: "Little Rock",
-  },
-  {
-    code: "LRD",
-    name: "Laredo",
-  },
-  {
-    code: "MBS",
-    name: "Saginaw/Midland/Bay C.",
-  },
-  {
-    code: "MDT",
-    name: "Harrisburg",
-  },
-  {
-    code: "MEM",
-    name: "Memphis",
-  },
-  {
-    code: "MFE",
-    name: "McAllen/Mission",
-  },
-  {
-    code: "MGM",
-    name: "Montgomery",
-  },
-  {
-    code: "MKE",
-    name: "Milwaukee",
-  },
-  {
-    code: "MLI",
-    name: "Moline",
-  },
-  {
-    code: "MOB",
-    name: "Mobile",
-  },
-  {
-    code: "OKC",
-    name: "Oklahoma City",
-  },
-  {
-    code: "PDX",
-    name: "Portland",
-  },
-  {
-    code: "RDU",
-    name: "Raleigh/Durham",
-  },
-  {
-    code: "ROC",
-    name: "Rochester",
-  },
-  {
-    code: "SAN",
-    name: "San Diego",
-  },
-  {
-    code: "SBN",
-    name: "South Bend",
-  },
-  {
-    code: "SHV",
-    name: "Shreveport",
-  },
-  {
-    code: "SLC",
-    name: "Salt Lake City",
-  },
-  {
-    code: "SMF",
-    name: "Sacramento",
-  },
-  {
-    code: "SWF",
-    name: "New York",
-  },
-  {
-    code: "TOL",
-    name: "Toledo",
-  },
-  {
-    code: "TUL",
-    name: "Tulsa",
-  },
-  {
-    code: "TUS",
-    name: "Tucson",
-  },
-  {
-    code: "TVC",
-    name: "Traverse City",
-  },
-  {
-    code: "YUL",
-    name: "Montreal",
-  },
-  {
-    code: "YYZ",
-    name: "Toronto",
-  },
-  {
-    code: "PWM",
-    name: "Portland",
-  },
-  {
-    code: "MHT",
-    name: "Manchester",
-  },
+  
+  const locations = [
+    { 
+        code: "CHS", 
+        icao: "KCHS", 
+        name: "Charleston"
+    },
+    {
+      code: "ATL",
+      icao: "KATL",
+       name: "Atlanta"
+    },
+    {
+      code: "SEA",
+      icao: "KSEA",
+       name: "Seattle"
+    },
+    {
+      code: "CVG",
+      icao: "KCVG",
+       name: "Cincinnati"
+    },
+    {
+      code: "LCK",
+      icao: "KLCK",
+       name: "Columbus"
+    },
+    {
+      code: "IND",
+      icao: "KIND",
+       name: "Indianapolis"
+    },
+    {
+      code: "SDF",
+      icao: "KSDF",
+       name: "Louisville"
+    },
+    {
+      code: "PIT",
+      icao: "KPIT",
+       name: "Pittsburgh"
+    },
+    {
+      code: "BLV",
+      icao: "KBLV",
+       name: "St. Louis"
+    },
+    {
+      code: "CLT",
+      icao: "KCLT",
+       name: "Charlotte"
+    },
+    {
+      code: "ORD",
+      icao: "KORD",
+       name: "Chicago"
+    },
+    {
+      code: "DFW",
+      icao: "KDFW",
+       name: "Dallas/Forth Worth"
+    },
+    {
+      code: "PHL",
+      icao: "KPHL",
+       name: "Philadelphia"
+    },
+    {
+      code: "MIA",
+      icao: "KMIA",
+       name: "Miami"
+    },
+    {
+      code: "DCA",
+      icao: "KDCA",
+       name: "Washington, D.C."
+    },
+    {
+      code: "HVN",
+      icao: "KHVN",
+       name: "New Haven"
+    },
+    {
+      code: "CAK",
+      icao: "KCAK",
+       name: "Akron/Canton"
+    },
+    {
+      code: "CMH",
+      icao: "KCMH",
+       name: "Columbus"
+    },
+    {
+      code: "RSW",
+      icao: "KRSW",
+       name: "Fort Myers"
+    },
+    {
+      code: "BDL",
+      icao: "KBDL",
+       name: "Hartford"
+    },
+    {
+      code: "ISP",
+      icao: "KISP",
+       name: "Islip"
+    },
+    {
+      code: "LAS",
+      icao: "KLAS",
+       name: "Las Vegas"
+    },
+    {
+      code: "SDF",
+      icao: "KSDF",
+       name: "Louisville"
+    },
+    {
+      code: "MSY",
+      icao: "KMSY",
+       name: "New Orleans"
+    },
+    {
+      code: "ORF",
+      icao: "KORF",
+       name: "Norfolk"
+    },
+    {
+      code: "MCO",
+      icao: "KMCO",
+       name: "Orlando"
+    },
+    {
+      code: "PFD",
+      icao: "KPFD",
+       name: "Providence"
+    },
+    {
+      code: "RIC",
+      icao: "KRIC",
+       name: "Richmond"
+    },
+    {
+      code: "SFO",
+      icao: "KSFO",
+       name: "San Francisco"
+    },
+    {
+      code: "SYR",
+      icao: "KSYR",
+       name: "Syracuse"
+    },
+    {
+      code: "TPA",
+      icao: "KTPA",
+       name: "Tampa"
+    },
+    {
+      code: "HPN",
+      icao: "KHPN",
+       name: "Westchester, NY"
+    },
+    {
+      code: "PBI",
+      icao: "KPBI",
+       name: "West Palm Beach"
+    },
+    {
+      code: "BOS",
+      icao: "KBOS",
+       name: "Boston"
+    },
+    {
+      code: "DTW",
+      icao: "KDTW",
+       name: "Detroit"
+    },
+    {
+      code: "LGA",
+      icao: "KLGA",
+       name: "New York City"
+    },
+    {
+      code: "JFK",
+      icao: "KJFK",
+       name: "New York City"
+    },
+    {
+      code: "MSP",
+      icao: "KMSP",
+       name: "Minneapolis"
+    },
+    {
+      code: "DEN",
+      icao: "KDEN",
+       name: "Denver"
+    },
+    {
+      code: "FLL",
+      icao: "KFLL",
+       name: "Fort Lauderdale"
+    },
+    {
+      code: "LAX",
+      icao: "KLAX",
+       name: "Los Angeles"
+    },
+    {
+      code: "AUS",
+      icao: "KAUS",
+       name: "Austin"
+    },
+    {
+      code: "BWI",
+      icao: "KBWI",
+       name: "Baltimore"
+    },
+    {
+      code: "MDW",
+      icao: "KMDW",
+       name: "Chicago"
+    },
+    {
+      code: "DAL",
+      icao: "KDAL",
+       name: "Dallas"
+    },
+    {
+      code: "HOU",
+      icao: "KHOU",
+       name: "Houston"
+    },
+    {
+      code: "MCI",
+      icao: "KMCI",
+       name: "Kansas City"
+    },
+    {
+      code: "BNA",
+      icao: "KBNA",
+       name: "Nashville"
+    },
+    {
+      code: "STL",
+      icao: "KSTL",
+       name: "St. Louis"
+    },
+    {
+      code: "IAH",
+      icao: "KIAH",
+       name: "Houston"
+    },
+    {
+      code: "EWR",
+      icao: "KEWR",
+       name: "Newark"
+    },
+    {
+      code: "IAD",
+      icao: "KIAD",
+       name: "Washington, D.C."
+    },
+    {
+      code: "PNS",
+      icao: "KPNS",
+       name: "Pensacola"
+    },
+    {
+      code: "SAT",
+      icao: "KSAT",
+       name: "San Antonio"
+    },
+    {
+      code: "COS",
+      icao: "KCOS",
+       name: "Colorado Springs"
+    },
+    {
+      code: "PHX",
+      icao: "KPHX",
+       name: "Phoenix"
+    },
+    {
+      code: "PVD",
+      icao: "KPVD",
+       name: "Providence"
+    },
+    {
+      code: "PVU",
+      icao: "KPVU",
+       name: "Provo"
+    },
+    {
+      code: "TYS",
+      icao: "KTYS",
+       name: "Jacksonville"
+    },
+    {
+      code: "ABE",
+      icao: "KABE",
+       name: "Allentown"
+    },
+    {
+      code: "OMA",
+      icao: "KOMA",
+       name: "Omaha"
+    },
+    {
+      code: "TRI",
+      icao: "KTRI",
+       name: "Bristol/Johnson/Kingsp"
+    },
+    {
+      code: "ABQ",
+      icao: "KABQ",
+       name: "Albuquerque"
+    },
+    {
+      code: "ALB",
+      icao: "KALB",
+       name: "Albany"
+    },
+    {
+      code: "BHM",
+      icao: "KBHM",
+       name: "Birmingham"
+    },
+    {
+      code: "BRL",
+      icao: "KBRL",
+       name: "Burlington"
+    },
+    {
+      code: "BTR",
+      icao: "KBTR",
+       name: "Baton Rouge"
+    },
+    {
+      code: "BUF",
+      icao: "KBUF",
+       name: "Buffalo"
+    },
+    {
+      code: "CAE",
+      icao: "KCAE",
+       name: "Columbia"
+    },
+    {
+      code: "CID",
+      icao: "KCID",
+       name: "Cedar Rapids"
+    },
+    {
+      code: "CLE",
+      icao: "KCLE",
+       name: "Cleveland"
+    },
+    {
+      code: "CRP",
+      icao: "KCRP",
+       name: "Corpus Christi"
+    },
+    {
+      code: "DAY",
+      icao: "KDAY",
+       name: "Dayton"
+    },
+    {
+      code: "DSM",
+      icao: "KDSM",
+       name: "Des Moines"
+    },
+    {
+      code: "ELP",
+      icao: "KELP",
+       name: "El Paso"
+    },
+    {
+      code: "EVV",
+      icao: "KEVV",
+       name: "Evansville"
+    },
+    {
+      code: "FWA",
+      icao: "KFWA",
+       name: "Fort Wayne"
+    },
+    {
+      code: "GRR",
+      icao: "KGRR",
+       name: "Grand Rapids"
+    },
+    {
+      code: "GSO",
+      icao: "KGSO",
+       name: "Greensboro/High Point"
+    },
+    {
+      code: "GSP",
+      icao: "KGSP",
+       name: "Greenville/Spartanburg"
+    },
+    {
+      code: "HSV",
+      icao: "KHSV",
+       name: "Huntsville"
+    },
+    {
+      code: "JAX",
+      icao: "KJAX",
+       name: "Jacksonville"
+    },
+    {
+      code: "LFT",
+      icao: "KLFT",
+       name: "Lafayette"
+    },
+    {
+      code: "LIT",
+      icao: "KLIT",
+       name: "Little Rock"
+    },
+    {
+      code: "LRD",
+      icao: "KLRD",
+       name: "Laredo"
+    },
+    {
+      code: "MBS",
+      icao: "KMBS",
+       name: "Saginaw/Midland/Bay C."
+    },
+    {
+      code: "MDT",
+      icao: "KMDT",
+       name: "Harrisburg"
+    },
+    {
+      code: "MEM",
+      icao: "KMEM",
+       name: "Memphis"
+    },
+    {
+      code: "MFE",
+      icao: "KMFE",
+       name: "McAllen/Mission"
+    },
+    {
+      code: "MGM",
+      icao: "KMGM",
+       name: "Montgomery"
+    },
+    {
+      code: "MKE",
+      icao: "KMKE",
+       name: "Milwaukee"
+    },
+    {
+      code: "MLI",
+      icao: "KMLI",
+       name: "Moline"
+    },
+    {
+      code: "MOB",
+      icao: "KMOB",
+       name: "Mobile"
+    },
+    {
+      code: "OKC",
+      icao: "KOKC",
+       name: "Oklahoma City"
+    },
+    {
+      code: "PDX",
+      icao: "KPDX",
+       name: "Portland"
+    },
+    {
+      code: "RDU",
+      icao: "KRDU",
+       name: "Raleigh/Durham"
+    },
+    {
+      code: "ROC",
+      icao: "KROC",
+       name: "Rochester"
+    },
+    {
+      code: "SAN",
+      icao: "KSAN",
+      name: "San Diego",
+    },
+    {
+      code: "SBN",
+      icao: "KSBN",
+      name: "South Bend",
+    },
+    {
+      code: "SHV",
+      icao: "KSHV",
+      name: "Shreveport",
+    },
+    {
+      code: "SLC",
+      icao: "KSLC",
+      name: "Salt Lake City",
+    },
+    {
+      code: "SMF",
+      icao: "KSMF",
+      name: "Sacramento",
+    },
+    {
+      code: "SWF",
+      icao: "KSWF",
+      name: "New York",
+    },
+    {
+      code: "TOL",
+      icao: "KTOL",
+      name: "Toledo",
+    },
+    {
+      code: "TUL",
+      icao: "KTUL",
+      name: "Tulsa",
+    },
+    {
+      code: "TUS",
+      icao: "KTUS",
+      name: "Tucson",
+    },
+    {
+      code: "TVC",
+      icao: "KTVC",
+      name: "Traverse City",
+    },
+    {
+      code: "YUL",
+      icao: "CYUL",
+      name: "Montreal",
+    },
+    {
+      code: "YYZ",
+      icao: "CYYZ",
+      name: "Toronto",
+    },
+    {
+      code: "PWM",
+      icao: "KPWM",
+      name: "Portland",
+    },
+    {
+      code: "MHT",
+      icao: "KMHT",
+      name: "Manchester",
+    },
 ];
+    
 
 async function getData(url) {
   try {
@@ -600,36 +712,34 @@ async function fetchFlightData() {
       (airline) => airline.code === flight.carrierCode?.iata
     );
 
-    const statusDetails = flight.statusDetails?.[0];
-    const statusObj = statusDetails
-      ? type === "arrival"
-        ? statusDetails.arrival
-        : statusDetails.departure
-      : null;
+    const statusDetails = flight.statusDetails?.[0] || {};
 
-    const timeliness = statusDetails
-      ? type === "arrival"
-        ? statusDetails.arrival.estimatedTime.inGateTimeliness
-        : statusDetails.departure.estimatedTime.outGateTimeliness
-      : null;
+    const statusObj =
+      type === "arrival"
+        ? statusDetails.arrival || {}
+        : statusDetails.departure || {};
 
-    const city = statusDetails
-      ? type === "arrival"
-        ? statusDetails.departure.airport.iata
-        : statusDetails?.arrival.airport.iata
-      : null;
+    const timeliness =
+      type === "arrival"
+        ? statusObj.estimatedTime?.inGateTimeliness || null
+        : statusObj.estimatedTime?.outGateTimeliness || null;
+
+    const city =
+      type === "arrival"
+        ? statusDetails.departure?.airport?.iata || null
+        : statusDetails.arrival?.airport?.iata || null;
 
     const cityName = locations.find((location) => location.code === city)?.name;
 
     return {
-      airlineName: airline ? airline.name : null,
+      airlineName: airline?.name || null,
       flightNumber: flight.flightNumber || null,
       city: cityName,
       timeliness: timeliness,
       aircraftRegistrationNumber:
-        statusDetails.equipment.aircraftRegistrationNumber,
-      aircraftType: statusDetails.equipment.actualAircraftType.icao,
-      gate: statusObj.gate,
+        statusDetails.equipment?.aircraftRegistrationNumber || null,
+      aircraftType: statusDetails.equipment?.actualAircraftType?.icao || null,
+      gate: statusObj.gate || null,
       status: statusObj,
       type,
     };
@@ -653,20 +763,17 @@ async function fetchFlightData() {
   ).length;
   document.getElementById("totalDepartures").innerText = `${totalDepartures}`;
 
-  // airline chart
   const airlineFlightTypeStackedBar = Plot.plot({
     marginBottom: 60,
     x: { label: null, tickRotate: -30 },
     y: { label: "Flights" },
     fx: { label: null },
-    // color: { legend: true },
     marks: [
       Plot.barY(
         combinedFlights,
         Plot.groupX(
           { y: "count" },
           {
-            // fx: "type",
             fill: "type",
             x: "airlineName",
             sort: { x: "y", reverse: true },
@@ -694,7 +801,6 @@ async function fetchFlightData() {
           { y: "count" },
           {
             x: "airlineName",
-            // fy: "gate",
             fill: "timeliness",
             sort: { x: "y", reverse: true },
             tip: true,
@@ -715,7 +821,6 @@ async function fetchFlightData() {
       { y: "count" },
       {
         x: "gate",
-        // fy: "gate",
         fill: "timeliness",
         sort: { x: "y", reverse: true },
         tip: true,
@@ -730,8 +835,9 @@ async function fetchFlightData() {
     .getElementById("flightsTimeliness")
     .appendChild(flightsTimelinessStackedBar);
 
+  // display(arrivals);
+
   // display(combinedFlights);
-  display(arrivals);
 }
 
 fetchFlightData();
@@ -752,8 +858,13 @@ fetchFlightData();
     <span class="big" id="totalDepartures"></span>
   </div>
 
+
   <div class="card grid-colspan-2" style="display: flex; flex-direction: column; gap: 1rem;">
   <span id="airlinesByFlightType"></span>
+  </div>
+
+  <div class="card grid-colspan-2" style="display: flex; flex-direction: column; gap: 1rem;">
+  <span id="historicFlightsTrendLine"></span>
   </div>
 
   <div class="card grid-colspan-2" style="display: flex; flex-direction: column; gap: 1rem;">
@@ -762,6 +873,10 @@ fetchFlightData();
 
   <div class="card grid-colspan-2" style="display: flex; flex-direction: row; gap: 1rem;">
   <span id="flightsTimeliness"></span>
+  </div>
+
+  <div class="card grid-colspan-2" style="display: flex; flex-direction: row; gap: 1rem;">
+  <span id="historicFlightsTrendLineByAirline"></span>
   </div>
   
 </div>
@@ -781,73 +896,141 @@ async function getHistData(url) {
   }
 }
 
-const historicalArrivals = await getHistData("https://raw.githubusercontent.com/bradfordjohnson/kchs/refs/heads/master/data/arrivals.json");
+const historicalArrivals = await getHistData(
+  "https://raw.githubusercontent.com/bradfordjohnson/kchs/refs/heads/master/data/arrivals.json"
+);
 
-const historicalDepartures = await getHistData("https://raw.githubusercontent.com/bradfordjohnson/kchs/refs/heads/master/data/departures.json");
+const historicalDepartures = await getHistData(
+  "https://raw.githubusercontent.com/bradfordjohnson/kchs/refs/heads/master/data/departures.json"
+);
 
-const histArrivals = Object.values(historicalArrivals).flat(2).map(entry => ({
-  ...entry,
-  type: 'arrival'
-}));
+const histArrivals = Object.values(historicalArrivals)
+  .flat(2)
+  .map((entry) => ({
+    ...entry,
+    type: "arrival",
+  }));
 
-const histDepartures = Object.values(historicalDepartures).flat(2).map(entry => ({
-  ...entry,
-  type: 'departure'
-}));
+const histDepartures = Object.values(historicalDepartures)
+  .flat(2)
+  .map((entry) => ({
+    ...entry,
+    type: "departure",
+  }));
 
 const combinedHistoricalFlights = [...histArrivals, ...histDepartures];
 
 const airlineLookup = Object.fromEntries(
-  airlines.map(airline => [airline.icao, airline])
+  airlines.map((airline) => [airline.icao, airline])
 );
 
 const filteredHistoricalFlights = combinedHistoricalFlights.filter(
-flight => airlineLookup[flight.icao]
+  (flight) => airlineLookup[flight.icao]
 );
 
-// need to map historical data like the current data
-  // const mapData = (flight, type) => {
-  //   const airline = airlines.find(
-  //     (airline) => airline.code === flight.carrierCode?.iata
-  //   );
+const mapHistoricData = (flight, type) => {
+  const airline = airlines.find(
+    (airline) => airline.icao === flight.icao
+  );
 
-  //   const statusDetails = flight.statusDetails?.[0];
-  //   const statusObj = statusDetails
-  //     ? type === "arrival"
-  //       ? statusDetails.arrival
-  //       : statusDetails.departure
-  //     : null;
+  const timeliness =
+    type === "arrival"
+      ? flight.estimatedArrivalInGateTimeliness || null
+      : flight.estimatedDepartureOutGateTimeliness || null;
 
-  //   const timeliness = statusDetails
-  //     ? type === "arrival"
-  //       ? statusDetails.arrival.estimatedTime.inGateTimeliness
-  //       : statusDetails.departure.estimatedTime.outGateTimeliness
-  //     : null;
+  const city = type === "arrival" ? flight.departureIcao || null : flight.arrivalIcao || null;
 
-  //   const city = statusDetails
-  //     ? type === "arrival"
-  //       ? statusDetails.departure.airport.iata
-  //       : statusDetails?.arrival.airport.iata
-  //     : null;
+  const gate = type === "arrival" ? flight.arrivalGate || null : flight.departureGate || null;
 
-  //   const cityName = locations.find((location) => location.code === city)?.name;
+  const cityName = locations.find((location) => location.icao === city)?.name;
 
-  //   return {
-  //     airlineName: airline ? airline.name : null,
-  //     flightNumber: flight.flightNumber || null,
-  //     city: cityName,
-  //     timeliness: timeliness,
-  //     aircraftRegistrationNumber:
-  //       statusDetails.equipment.aircraftRegistrationNumber,
-  //     aircraftType: statusDetails.equipment.actualAircraftType.icao,
-  //     gate: statusObj.gate,
-  //     status: statusObj,
-  //     type,
-  //   };
-  // };
+  const date = type === "arrival" ? flight.arrivalDate || flight.departureDate || null : flight.departureDate || flight.arrivalDate || null;
+
+  return {
+    flightDate: date,
+    airlineName: airline?.name || null,
+    flightNumber: flight.flightNumber || null,
+    city: cityName,
+    timeliness: timeliness,
+    aircraftRegistrationNumber: flight.aircraftRegistrationNumber || null,
+    aircraftType: flight.aircraftType || null,
+    gate: gate,
+    type,
+  };
+};
+
+const mappedHistoricFlights = filteredHistoricalFlights.map(flight =>
+  mapHistoricData(flight, flight.type)
+);
+
+const parseDate = d3.timeParse("%Y-%m-%d");
+
+const historicAggregatedFlightsByType = Array.from(
+  d3.rollup(
+    mappedHistoricFlights,
+    flights => flights.length,
+    flight => flight.flightDate,
+    flight => flight.type
+  ),
+  ([flightDate, typeMap]) => {
+    return Array.from(typeMap, ([type, count]) => ({
+      date: parseDate(flightDate),
+      type,
+      count
+    }));
+  }
+).flat();
+
+const historicFlightsTrendLine = Plot.plot({
+  y: {zero: true},
+  fy: {label: null},
+  marks: [
+    Plot.lineY(historicAggregatedFlightsByType, {x: "date", y: "count", stroke: "type", fy: "type", tip: "x"}),
+    Plot.crosshairX(historicAggregatedFlightsByType, {x: "date", y: "count"}),
+    Plot.frame()
+  ]
+});
+
+  document
+    .getElementById("historicFlightsTrendLine")
+    .appendChild(historicFlightsTrendLine);
+
+const historicAggregatedFlightsByAirline = Array.from(
+  d3.rollup(
+    mappedHistoricFlights,
+    flights => flights.length,
+    flight => flight.flightDate,
+    flight => flight.airlineName
+  ),
+  ([flightDate, typeMap]) => {
+    return Array.from(typeMap, ([airlineName, count]) => ({
+      date: parseDate(flightDate),
+      airlineName,
+      count
+    }));
+  }
+).flat();
+
+const historicFlightsTrendLineByAirline = Plot.plot({
+  y: {zero: true},
+  marginRight: 100,
+  fy: {label: null},
+  marks: [
+    Plot.ruleY([0]),
+    Plot.areaY(historicAggregatedFlightsByAirline, {x: "date", y: "count", fy: "airlineName", tip: "x"}),
+    Plot.frame()
+  ]
+});
+
+  document
+    .getElementById("historicFlightsTrendLineByAirline")
+    .appendChild(historicFlightsTrendLineByAirline);
 
 
-display(filteredHistoricalFlights)
+// display(historicAggregatedFlightsByAirline);
 
+// display(mappedHistoricFlights)
+
+// display(historicFlightsTrendLineByAirline)
 
 ```
