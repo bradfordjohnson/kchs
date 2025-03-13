@@ -1,6 +1,22 @@
 <!-- markdownlint-disable -->
 
 # Charleston International Airport
+<div class="grid grid-cols-2" style="grid-auto-rows: auto;">
+<div class="tip" label="About">
+
+[![ETL Flight Data](https://github.com/bradfordjohnson/kchs/actions/workflows/etl-flight-data.yaml/badge.svg)](https://github.com/bradfordjohnson/kchs/actions/workflows/etl-flight-data.yaml)
+[![Deploy dashboard to Pages](https://github.com/bradfordjohnson/kchs/actions/workflows/dashboard-deploy.yml/badge.svg)](https://github.com/bradfordjohnson/kchs/actions/workflows/dashboard-deploy.yml)
+
+Built with Observable Framework, this _work in progress_ dashboard delivers a dynamic view of Charleston International Airport (KCHS) flights, combining JavaScript visuals, data mapping, and a Python ETL pipeline for daily historical snapshots.
+</div>
+
+<div class="warning">
+
+__Historical trend data snapshots__ (displayed in line / area charts) __may contain inaccuracies.__
+
+Live data is pulled directly from an API that powers the official CHS website.
+</div>
+</div>
 
 ```js
 import * as Plot from "npm:@observablehq/plot";
