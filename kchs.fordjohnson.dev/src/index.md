@@ -1,752 +1,169 @@
 <!-- markdownlint-disable -->
 
 # Charleston International Airport
-<div class="grid grid-cols-2" style="grid-auto-rows: auto;">
-<div class="tip" label="About">
-
-[![ETL Flight Data](https://github.com/bradfordjohnson/kchs/actions/workflows/etl-flight-data.yaml/badge.svg)](https://github.com/bradfordjohnson/kchs/actions/workflows/etl-flight-data.yaml)
-[![Deploy dashboard to Pages](https://github.com/bradfordjohnson/kchs/actions/workflows/dashboard-deploy.yml/badge.svg)](https://github.com/bradfordjohnson/kchs/actions/workflows/dashboard-deploy.yml)
-
-Built with Observable Framework, this _work in progress_ dashboard delivers a dynamic view of Charleston International Airport (KCHS) flights, combining JavaScript visuals, data mapping, and a Python ETL pipeline for daily historical snapshots.
-</div>
-
-<div class="warning">
-
-__Historical trend data snapshots__ (displayed in line / area charts) __may contain inaccuracies.__
-
-Live data is pulled directly from an API that powers the official CHS website.
-</div>
-</div>
 
 ```js
 import * as Plot from "npm:@observablehq/plot";
+import * as L from "npm:leaflet";
+import {airlines, locations, chsGatePlanes} from "./helpers.js";
 
-const airlines = [
-    {
-      code: "AA",
-      icao: "AAL",
-      name: "American Airlines",
-    },
-    {
-      code: "AS",
-      icao: "ASA",
-      name: "Alaska",
-    },
-    {
-      code: "G4",
-      icao: "AAY",
-      name: "Allegiant",
-    },
-    {
-      code: "XP",
-      icao: "VXP",
-      name: "Avelo",
-    },
-    {
-      code: "MX",
-      icao: "MXY",
-      name: "Breeze Airways",
-    },
-    {
-      code: "DL",
-      icao: "DAL",
-      name: "Delta",
-    },
-    {
-      code: "F9",
-      icao: "FFT",
-      name: "Frontier",
-    },
-    {
-      code: "B6",
-      icao: "JBU",
-      name: "JetBlue",
-    },
-    {
-      code: "3M",
-      icao: "SIL",
-      name: "Silver",
-    },
-    {
-      code: "WN",
-      icao: "SWA",
-      name: "Southwest",
-    },
-    {
-      code: "SY",
-      icao: "SCX",
-      name: "Sun Country",
-    },
-    {
-      code: "UA",
-      icao: "UAL",
-      name: "United Airlines",
-    },
-    {
-      code: "NK",
-      icao: "NKS",
-      name: "Spirit",
-    },
-    {
-      code: "AC",
-      icao: "ACA",
-      name: "Air Canada",
-    },
-];
-  
-  const locations = [
-    { 
-        code: "CHS", 
-        icao: "KCHS", 
-        name: "Charleston"
-    },
-    {
-      code: "ATL",
-      icao: "KATL",
-       name: "Atlanta"
-    },
-    {
-      code: "SEA",
-      icao: "KSEA",
-       name: "Seattle"
-    },
-    {
-      code: "CVG",
-      icao: "KCVG",
-       name: "Cincinnati"
-    },
-    {
-      code: "LCK",
-      icao: "KLCK",
-       name: "Columbus"
-    },
-    {
-      code: "IND",
-      icao: "KIND",
-       name: "Indianapolis"
-    },
-    {
-      code: "SDF",
-      icao: "KSDF",
-       name: "Louisville"
-    },
-    {
-      code: "PIT",
-      icao: "KPIT",
-       name: "Pittsburgh"
-    },
-    {
-      code: "BLV",
-      icao: "KBLV",
-       name: "St. Louis"
-    },
-    {
-      code: "CLT",
-      icao: "KCLT",
-       name: "Charlotte"
-    },
-    {
-      code: "ORD",
-      icao: "KORD",
-       name: "Chicago"
-    },
-    {
-      code: "DFW",
-      icao: "KDFW",
-       name: "Dallas/Forth Worth"
-    },
-    {
-      code: "PHL",
-      icao: "KPHL",
-       name: "Philadelphia"
-    },
-    {
-      code: "MIA",
-      icao: "KMIA",
-       name: "Miami"
-    },
-    {
-      code: "DCA",
-      icao: "KDCA",
-       name: "Washington, D.C."
-    },
-    {
-      code: "HVN",
-      icao: "KHVN",
-       name: "New Haven"
-    },
-    {
-      code: "CAK",
-      icao: "KCAK",
-       name: "Akron/Canton"
-    },
-    {
-      code: "CMH",
-      icao: "KCMH",
-       name: "Columbus"
-    },
-    {
-      code: "RSW",
-      icao: "KRSW",
-       name: "Fort Myers"
-    },
-    {
-      code: "BDL",
-      icao: "KBDL",
-       name: "Hartford"
-    },
-    {
-      code: "ISP",
-      icao: "KISP",
-       name: "Islip"
-    },
-    {
-      code: "LAS",
-      icao: "KLAS",
-       name: "Las Vegas"
-    },
-    {
-      code: "SDF",
-      icao: "KSDF",
-       name: "Louisville"
-    },
-    {
-      code: "MSY",
-      icao: "KMSY",
-       name: "New Orleans"
-    },
-    {
-      code: "ORF",
-      icao: "KORF",
-       name: "Norfolk"
-    },
-    {
-      code: "MCO",
-      icao: "KMCO",
-       name: "Orlando"
-    },
-    {
-      code: "PFD",
-      icao: "KPFD",
-       name: "Providence"
-    },
-    {
-      code: "RIC",
-      icao: "KRIC",
-       name: "Richmond"
-    },
-    {
-      code: "SFO",
-      icao: "KSFO",
-       name: "San Francisco"
-    },
-    {
-      code: "SYR",
-      icao: "KSYR",
-       name: "Syracuse"
-    },
-    {
-      code: "TPA",
-      icao: "KTPA",
-       name: "Tampa"
-    },
-    {
-      code: "HPN",
-      icao: "KHPN",
-       name: "Westchester, NY"
-    },
-    {
-      code: "PBI",
-      icao: "KPBI",
-       name: "West Palm Beach"
-    },
-    {
-      code: "BOS",
-      icao: "KBOS",
-       name: "Boston"
-    },
-    {
-      code: "DTW",
-      icao: "KDTW",
-       name: "Detroit"
-    },
-    {
-      code: "LGA",
-      icao: "KLGA",
-       name: "New York City"
-    },
-    {
-      code: "JFK",
-      icao: "KJFK",
-       name: "New York City"
-    },
-    {
-      code: "MSP",
-      icao: "KMSP",
-       name: "Minneapolis"
-    },
-    {
-      code: "DEN",
-      icao: "KDEN",
-       name: "Denver"
-    },
-    {
-      code: "FLL",
-      icao: "KFLL",
-       name: "Fort Lauderdale"
-    },
-    {
-      code: "LAX",
-      icao: "KLAX",
-       name: "Los Angeles"
-    },
-    {
-      code: "AUS",
-      icao: "KAUS",
-       name: "Austin"
-    },
-    {
-      code: "BWI",
-      icao: "KBWI",
-       name: "Baltimore"
-    },
-    {
-      code: "MDW",
-      icao: "KMDW",
-       name: "Chicago"
-    },
-    {
-      code: "DAL",
-      icao: "KDAL",
-       name: "Dallas"
-    },
-    {
-      code: "HOU",
-      icao: "KHOU",
-       name: "Houston"
-    },
-    {
-      code: "MCI",
-      icao: "KMCI",
-       name: "Kansas City"
-    },
-    {
-      code: "BNA",
-      icao: "KBNA",
-       name: "Nashville"
-    },
-    {
-      code: "STL",
-      icao: "KSTL",
-       name: "St. Louis"
-    },
-    {
-      code: "IAH",
-      icao: "KIAH",
-       name: "Houston"
-    },
-    {
-      code: "EWR",
-      icao: "KEWR",
-       name: "Newark"
-    },
-    {
-      code: "IAD",
-      icao: "KIAD",
-       name: "Washington, D.C."
-    },
-    {
-      code: "PNS",
-      icao: "KPNS",
-       name: "Pensacola"
-    },
-    {
-      code: "SAT",
-      icao: "KSAT",
-       name: "San Antonio"
-    },
-    {
-      code: "COS",
-      icao: "KCOS",
-       name: "Colorado Springs"
-    },
-    {
-      code: "PHX",
-      icao: "KPHX",
-       name: "Phoenix"
-    },
-    {
-      code: "PVD",
-      icao: "KPVD",
-       name: "Providence"
-    },
-    {
-      code: "PVU",
-      icao: "KPVU",
-       name: "Provo"
-    },
-    {
-      code: "TYS",
-      icao: "KTYS",
-       name: "Jacksonville"
-    },
-    {
-      code: "ABE",
-      icao: "KABE",
-       name: "Allentown"
-    },
-    {
-      code: "OMA",
-      icao: "KOMA",
-       name: "Omaha"
-    },
-    {
-      code: "TRI",
-      icao: "KTRI",
-       name: "Bristol/Johnson/Kingsp"
-    },
-    {
-      code: "ABQ",
-      icao: "KABQ",
-       name: "Albuquerque"
-    },
-    {
-      code: "ALB",
-      icao: "KALB",
-       name: "Albany"
-    },
-    {
-      code: "BHM",
-      icao: "KBHM",
-       name: "Birmingham"
-    },
-    {
-      code: "BRL",
-      icao: "KBRL",
-       name: "Burlington"
-    },
-    {
-      code: "BTR",
-      icao: "KBTR",
-       name: "Baton Rouge"
-    },
-    {
-      code: "BUF",
-      icao: "KBUF",
-       name: "Buffalo"
-    },
-    {
-      code: "CAE",
-      icao: "KCAE",
-       name: "Columbia"
-    },
-    {
-      code: "CID",
-      icao: "KCID",
-       name: "Cedar Rapids"
-    },
-    {
-      code: "CLE",
-      icao: "KCLE",
-       name: "Cleveland"
-    },
-    {
-      code: "CRP",
-      icao: "KCRP",
-       name: "Corpus Christi"
-    },
-    {
-      code: "DAY",
-      icao: "KDAY",
-       name: "Dayton"
-    },
-    {
-      code: "DSM",
-      icao: "KDSM",
-       name: "Des Moines"
-    },
-    {
-      code: "ELP",
-      icao: "KELP",
-       name: "El Paso"
-    },
-    {
-      code: "EVV",
-      icao: "KEVV",
-       name: "Evansville"
-    },
-    {
-      code: "FWA",
-      icao: "KFWA",
-       name: "Fort Wayne"
-    },
-    {
-      code: "GRR",
-      icao: "KGRR",
-       name: "Grand Rapids"
-    },
-    {
-      code: "GSO",
-      icao: "KGSO",
-       name: "Greensboro/High Point"
-    },
-    {
-      code: "GSP",
-      icao: "KGSP",
-       name: "Greenville/Spartanburg"
-    },
-    {
-      code: "HSV",
-      icao: "KHSV",
-       name: "Huntsville"
-    },
-    {
-      code: "JAX",
-      icao: "KJAX",
-       name: "Jacksonville"
-    },
-    {
-      code: "LFT",
-      icao: "KLFT",
-       name: "Lafayette"
-    },
-    {
-      code: "LIT",
-      icao: "KLIT",
-       name: "Little Rock"
-    },
-    {
-      code: "LRD",
-      icao: "KLRD",
-       name: "Laredo"
-    },
-    {
-      code: "MBS",
-      icao: "KMBS",
-       name: "Saginaw/Midland/Bay C."
-    },
-    {
-      code: "MDT",
-      icao: "KMDT",
-       name: "Harrisburg"
-    },
-    {
-      code: "MEM",
-      icao: "KMEM",
-       name: "Memphis"
-    },
-    {
-      code: "MFE",
-      icao: "KMFE",
-       name: "McAllen/Mission"
-    },
-    {
-      code: "MGM",
-      icao: "KMGM",
-       name: "Montgomery"
-    },
-    {
-      code: "MKE",
-      icao: "KMKE",
-       name: "Milwaukee"
-    },
-    {
-      code: "MLI",
-      icao: "KMLI",
-       name: "Moline"
-    },
-    {
-      code: "MOB",
-      icao: "KMOB",
-       name: "Mobile"
-    },
-    {
-      code: "OKC",
-      icao: "KOKC",
-       name: "Oklahoma City"
-    },
-    {
-      code: "PDX",
-      icao: "KPDX",
-       name: "Portland"
-    },
-    {
-      code: "RDU",
-      icao: "KRDU",
-       name: "Raleigh/Durham"
-    },
-    {
-      code: "ROC",
-      icao: "KROC",
-       name: "Rochester"
-    },
-    {
-      code: "SAN",
-      icao: "KSAN",
-      name: "San Diego",
-    },
-    {
-      code: "SBN",
-      icao: "KSBN",
-      name: "South Bend",
-    },
-    {
-      code: "SHV",
-      icao: "KSHV",
-      name: "Shreveport",
-    },
-    {
-      code: "SLC",
-      icao: "KSLC",
-      name: "Salt Lake City",
-    },
-    {
-      code: "SMF",
-      icao: "KSMF",
-      name: "Sacramento",
-    },
-    {
-      code: "SWF",
-      icao: "KSWF",
-      name: "New York",
-    },
-    {
-      code: "TOL",
-      icao: "KTOL",
-      name: "Toledo",
-    },
-    {
-      code: "TUL",
-      icao: "KTUL",
-      name: "Tulsa",
-    },
-    {
-      code: "TUS",
-      icao: "KTUS",
-      name: "Tucson",
-    },
-    {
-      code: "TVC",
-      icao: "KTVC",
-      name: "Traverse City",
-    },
-    {
-      code: "YUL",
-      icao: "CYUL",
-      name: "Montreal",
-    },
-    {
-      code: "YYZ",
-      icao: "CYYZ",
-      name: "Toronto",
-    },
-    {
-      code: "PWM",
-      icao: "KPWM",
-      name: "Portland",
-    },
-    {
-      code: "MHT",
-      icao: "KMHT",
-      name: "Manchester",
-    },
-];
-    
+const now = new Date();
+  document.getElementById("lastUpdated").innerText = now.toLocaleTimeString();
 
-async function getData(url) {
-  try {
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error(`Response status: ${response.status}`);
+const gateMap = {
+  A1: null,
+  A2A: null,
+  A2: null,
+  A3: null,
+  A4: null,
+  A5: null,
+  A6: null,
+  A7: null,
+  B1: null,
+  B2: null,
+  B3: null,
+  B4: null,
+  B5: null,
+  B6: null,
+  B7: null,
+  B8: null,
+  B9: null,
+  B10: null,
+};
+
+const groupFlightsByAircraft = (flights) => {
+  return flights.reduce((acc, flight) => {
+    const regNum = flight.aircraftRegistrationNumber;
+    if (!regNum) return acc;
+
+    if (!acc[regNum]) {
+      acc[regNum] = [];
     }
-    const data = await response.json();
-    return data.data;
-  } catch (error) {
-    console.error(error.message);
-    return null;
+    acc[regNum].push(flight);
+    return acc;
+  }, {});
+};
+
+// Function to sort flights by gate times
+const sortFlightsByGateTime = (flights) => {
+  return flights.sort((a, b) => {
+    const aGateTime =
+      a.status?.estimatedTime?.inGate?.local ||
+      a.status?.estimatedTime?.outGate?.local;
+    const bGateTime =
+      b.status?.estimatedTime?.inGate?.local ||
+      b.status?.estimatedTime?.outGate?.local;
+
+    return new Date(aGateTime) - new Date(bGateTime);
+  });
+};
+
+// Function to update gate map with occupancy and departure status
+const updateGateMap = (flights) => {
+  const groupedFlights = groupFlightsByAircraft(flights);
+
+  // For each aircraft, sort flights by gate times and update the gate status
+  for (const regNum in groupedFlights) {
+    const aircraftFlights = sortFlightsByGateTime(groupedFlights[regNum]);
+
+    let isAtGate = false;
+    let currentGate = null;
+
+    // Process each flight for this aircraft
+    for (const flight of aircraftFlights) {
+      const { gate, status, type } = flight;
+      if (!gate || !status || !status.actualTime) continue;
+
+      if (type === "arrival" && status.actualTime.inGate) {
+        // Arrival: Mark the gate as occupied if it's not already
+        if (!isAtGate && gateMap[gate] === null) {
+          gateMap[gate] = {
+            aircraft: regNum,
+            inTime: status.actualTime.inGate.local,
+            airlineName: flight.airlineName,
+          };
+          isAtGate = true;
+        }
+      } else if (type === "departure" && status.actualTime.outGate) {
+        // Departure: Mark the gate as free if the plane has departed
+        if (isAtGate && gateMap[gate]?.aircraft === regNum) {
+          // Clear the gate only if the aircraft matches
+          gateMap[gate] = null; // Clear the gate
+          isAtGate = false;
+        }
+      }
+    }
   }
-}
 
-function filterFlights(flights, flightType, airlines) {
-  return flights.filter((flight) => {
-    const airline = flight.carrierCode?.iata;
-    const serviceType = flight.serviceTypeCode?.iata;
-    if (!airline || !flight.statusDetails?.[0]) return false;
-
-    if (
-      (airline === "AC" &&
-        flightType === "arrival" &&
-        flight.departure.airport.iata !== "YYZ") ||
-      (airline === "UA" &&
-        flightType === "departure" &&
-        flight.arrival.airport.iata === "YYZ") ||
-      serviceType !== "J"
-    ) {
-      return false;
+  // Optionally, clear gates that should no longer be occupied based on outGate time
+  for (const gate in gateMap) {
+    if (gateMap[gate] !== null && gateMap[gate]?.outTime) {
+      gateMap[gate] = null; // Clear gate if it's occupied but the plane has departed
     }
+  }
 
-    if (flight.codeshare?.comment050?.code) {
-      const codeshareAirline = flight.codeshare.comment050.code;
+  return gateMap;
+};
+
+async function fetchAndProcessFlights() {
+  const getData = async (url) => {
+    try {
+      const response = await fetch(url);
+      if (!response.ok) throw new Error(`Response status: ${response.status}`);
+      const data = await response.json();
+      return data.data;
+    } catch (error) {
+      console.error(error.message);
+      return null;
+    }
+  };
+
+  const filterFlights = (flights, flightType, airlines) =>
+    flights.filter((flight) => {
+      const airline = flight.carrierCode?.iata;
+      const serviceType = flight.serviceTypeCode?.iata;
+      if (!airline || !flight.statusDetails?.[0]) return false;
       if (
-        codeshareAirline !== "AC" &&
-        airlines.some((a) => a.code === codeshareAirline)
+        (airline === "AC" &&
+          flightType === "arrival" &&
+          flight.departure.airport.iata !== "YYZ") ||
+        (airline === "UA" &&
+          flightType === "departure" &&
+          flight.arrival.airport.iata === "YYZ") ||
+        serviceType !== "J"
       ) {
         return false;
       }
-    }
+      if (flight.codeshare?.comment050?.code) {
+        const codeshareAirline = flight.codeshare.comment050.code;
+        if (
+          codeshareAirline !== "AC" &&
+          airlines.some((a) => a.code === codeshareAirline)
+        ) {
+          return false;
+        }
+      }
+      return true;
+    });
 
-    return true;
-  });
-}
-
-async function fetchFlightData() {
-  const arrivalData = await getData(
-    "https://ccaafids.azurewebsites.net/api/FIDsTest?code=VnSepGuKSiEXD0zW_eOg73NkKKgyT_jDIZOm8pvuCbs8AzFuNZG1RA==&dir=arrival"
-  );
-
-  if (!arrivalData) {
-    console.error("No arrival data available");
-    return;
-  }
-
-  const arrivals = filterFlights(arrivalData, "arrival", airlines);
-
-  const departureData = await getData(
-    "https://ccaafids.azurewebsites.net/api/FIDsTest?code=VnSepGuKSiEXD0zW_eOg73NkKKgyT_jDIZOm8pvuCbs8AzFuNZG1RA==&dir=departure"
-  );
-
-  if (!departureData) {
-    console.error("No departure data available");
-    return;
-  }
-
-  const departures = filterFlights(departureData, "departure", airlines);
-
-  // mapping data
   const mapData = (flight, type) => {
     const airline = airlines.find(
       (airline) => airline.code === flight.carrierCode?.iata
     );
-
     const statusDetails = flight.statusDetails?.[0] || {};
-
     const statusObj =
       type === "arrival"
         ? statusDetails.arrival || {}
         : statusDetails.departure || {};
-
     const timeliness =
       type === "arrival"
         ? statusObj.estimatedTime?.inGateTimeliness || null
         : statusObj.estimatedTime?.outGateTimeliness || null;
-
     const city =
       type === "arrival"
         ? statusDetails.departure?.airport?.iata || null
         : statusDetails.arrival?.airport?.iata || null;
-
     const cityName = locations.find((location) => location.code === city)?.name;
-
     return {
       airlineName: airline?.name || null,
       flightNumber: flight.flightNumber || null,
@@ -761,10 +178,30 @@ async function fetchFlightData() {
     };
   };
 
+  const arrivalData = await getData(
+    "https://ccaafids.azurewebsites.net/api/FIDsTest?code=VnSepGuKSiEXD0zW_eOg73NkKKgyT_jDIZOm8pvuCbs8AzFuNZG1RA==&dir=arrival"
+  );
+  const departureData = await getData(
+    "https://ccaafids.azurewebsites.net/api/FIDsTest?code=VnSepGuKSiEXD0zW_eOg73NkKKgyT_jDIZOm8pvuCbs8AzFuNZG1RA==&dir=departure"
+  );
+  if (!arrivalData || !departureData) {
+    console.error("No flight data available");
+    return [];
+  }
+
   const combinedFlights = [
-    ...arrivals.map((flight) => mapData(flight, "arrival")),
-    ...departures.map((flight) => mapData(flight, "departure")),
+    ...filterFlights(arrivalData, "arrival", airlines).map((flight) =>
+      mapData(flight, "arrival")
+    ),
+    ...filterFlights(departureData, "departure", airlines).map((flight) =>
+      mapData(flight, "departure")
+    ),
   ];
+
+  return combinedFlights;
+}
+
+fetchAndProcessFlights().then((combinedFlights) => {
 
   const totalFlights = combinedFlights.length;
   document.getElementById("totalFlights").innerText = `${totalFlights}`;
@@ -779,8 +216,9 @@ async function fetchFlightData() {
   ).length;
   document.getElementById("totalDepartures").innerText = `${totalDepartures}`;
 
-  const airlineFlightTypeStackedBar = Plot.plot({
+    const airlineFlightTypeStackedBar = Plot.plot({
     marginBottom: 60,
+    color: {legend: true,},
     x: { label: null, tickRotate: -30 },
     y: { label: "Flights" },
     fx: { label: null },
@@ -799,20 +237,22 @@ async function fetchFlightData() {
       ),
     ],
   });
-
+  
   document
     .getElementById("airlinesByFlightType")
     .appendChild(airlineFlightTypeStackedBar);
+  
 
-  const airlineFlightTypeAndTimelinessStackedBar = Plot.plot({
+  const arrivalsAirline = combinedFlights.filter(flight => flight.type === "arrival");
+  const airlineArrivalsTimelinessStackedBar = Plot.plot({
     marginBottom: 60,
     x: { label: null, tickRotate: -30 },
     y: { label: "Flights" },
     fx: { label: null },
-    color: { domain: ["OnTime", "Delayed", "Early"], scheme: "category10" },
+    color: { domain: ["OnTime", "Delayed", "Early"], scheme: "category10", legend: true, },
     marks: [
       Plot.barY(
-        combinedFlights,
+        arrivalsAirline,
         Plot.groupX(
           { y: "count" },
           {
@@ -827,79 +267,95 @@ async function fetchFlightData() {
   });
 
   document
-    .getElementById("airlinesByFlightTypeAndTimeliness")
-    .appendChild(airlineFlightTypeAndTimelinessStackedBar);
+    .getElementById("airlinesArrivalsByTimeliness")
+    .appendChild(airlineArrivalsTimelinessStackedBar);
 
-  const flightsTimelinessStackedBar = Plot.barY(
-    combinedFlights,
-
-    Plot.groupX(
-      { y: "count" },
-      {
-        x: "gate",
-        fill: "timeliness",
-        sort: { x: "y", reverse: true },
-        tip: true,
-      }
-    )
-  ).plot({
-    color: { domain: ["OnTime", "Delayed", "Early"], scheme: "category10" },
+  const departuresAirline = combinedFlights.filter(flight => flight.type === "departure");
+  const airlineDeparturesTimelinessStackedBar = Plot.plot({
+    marginBottom: 60,
+    x: { label: null, tickRotate: -30 },
     y: { label: "Flights" },
+    fx: { label: null },
+    color: { domain: ["OnTime", "Delayed", "Early"], scheme: "category10", legend: true, },
+    marks: [
+      Plot.barY(
+        departuresAirline,
+        Plot.groupX(
+          { y: "count" },
+          {
+            x: "airlineName",
+            fill: "timeliness",
+            sort: { x: "y", reverse: true },
+            tip: true,
+          }
+        )
+      ),
+    ],
   });
 
   document
-    .getElementById("flightsTimeliness")
-    .appendChild(flightsTimelinessStackedBar);
+    .getElementById("airlinesDeparturesByTimeliness")
+    .appendChild(airlineDeparturesTimelinessStackedBar);
 
-  // display(arrivals);
 
-  // display(combinedFlights);
-}
+  const gateMapDiv = document.createElement("div");
+  gateMapDiv.style = "height: 450px;";
 
-fetchFlightData();
+  document
+    .getElementById("gate-map")
+    .appendChild(gateMapDiv);
+  
+  const map = L.map(gateMapDiv, {
+  zoomControl: true,
+  scrollWheelZoom: false,
+  dragging: true,
+  }).setView([32.885636, -80.036886], 18);
+
+  L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png", {
+  attribution:
+    '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>',
+  }).addTo(map);
+
+  const updatedGateMap = updateGateMap(combinedFlights);
+
+  const early = [];
+  const late = [];
+  const hidden = Object.keys(updatedGateMap).filter(
+    (gate) => updatedGateMap[gate] === null
+  );
+
+  Object.entries(chsGatePlanes).forEach(([key, { svg, bounds }]) => {
+    var svgElement = document.createElementNS(
+      "http://www.w3.org/2000/svg",
+      "svg"
+    );
+    svgElement.innerHTML = svg;
+    svgElement.classList.add(`plane-${key}`);
+
+    // If the key is in the 'early' list, change fill to green
+    if (early.includes(key)) {
+      svgElement.querySelectorAll("path").forEach((path) => {
+        path.setAttribute("fill", "#50C878");
+      });
+    }
+
+    if (late.includes(key)) {
+      svgElement.querySelectorAll("path").forEach((path) => {
+        path.setAttribute("fill", "#880808");
+      });
+    }
+
+    if (hidden.includes(key)) {
+      svgElement.style.display = "none"; // Completely hides the SVG
+    }
+
+    L.svgOverlay(svgElement, bounds).addTo(map);
+  });
+
+});
 ```
 
-<div class="grid grid-cols-4" style="grid-auto-rows: auto;">
-  <div class="card">
-    <h2>Scheduled Flights Today</h2>
-    <span class="big" id="totalFlights"></span>
-  </div>
-
-  <div class="card">
-    <h2>Scheduled Arrivals</h2>
-    <span class="big" id="totalArrivals"></span>
-  </div>
-  <div class="card">
-    <h2>Scheduled Departures</h2>
-    <span class="big" id="totalDepartures"></span>
-  </div>
-
-
-  <div class="card grid-colspan-2" style="display: flex; flex-direction: column; gap: 1rem;">
-  <span id="airlinesByFlightType"></span>
-  </div>
-
-  <div class="card grid-colspan-2" style="display: flex; flex-direction: column; gap: 1rem;">
-  <span id="historicFlightsTrendLine"></span>
-  </div>
-
-  <div class="card grid-colspan-2" style="display: flex; flex-direction: column; gap: 1rem;">
-  <span id="airlinesByFlightTypeAndTimeliness"></span>
-  </div>
-
-  <div class="card grid-colspan-2" style="display: flex; flex-direction: row; gap: 1rem;">
-  <span id="flightsTimeliness"></span>
-  </div>
-
-  <div class="card grid-colspan-2" style="display: flex; flex-direction: row; gap: 1rem;">
-  <span id="historicFlightsTrendLineByAirline"></span>
-  </div>
-  
-</div>
-
 ```js
-import { carrierCodes } from "./config.js";
-
 async function getHistData(url) {
   try {
     const response = await fetch(url);
@@ -998,7 +454,7 @@ const historicAggregatedFlightsByType = Array.from(
 ).flat();
 
 const historicFlightsTrendLine = Plot.plot({
-  y: {zero: true},
+  y: {zero: true, label: "Flights"},
   fy: {label: null},
   marks: [
     Plot.lineY(historicAggregatedFlightsByType, {x: "date", y: "count", stroke: "type", fy: "type", tip: "x"}),
@@ -1010,43 +466,70 @@ const historicFlightsTrendLine = Plot.plot({
   document
     .getElementById("historicFlightsTrendLine")
     .appendChild(historicFlightsTrendLine);
-
-const historicAggregatedFlightsByAirline = Array.from(
-  d3.rollup(
-    mappedHistoricFlights,
-    flights => flights.length,
-    flight => flight.flightDate,
-    flight => flight.airlineName
-  ),
-  ([flightDate, typeMap]) => {
-    return Array.from(typeMap, ([airlineName, count]) => ({
-      date: parseDate(flightDate),
-      airlineName,
-      count
-    }));
-  }
-).flat();
-
-const historicFlightsTrendLineByAirline = Plot.plot({
-  y: {zero: true},
-  marginRight: 100,
-  fy: {label: null},
-  marks: [
-    Plot.ruleY([0]),
-    Plot.areaY(historicAggregatedFlightsByAirline, {x: "date", y: "count", fy: "airlineName", tip: "x"}),
-    Plot.frame()
-  ]
-});
-
-  document
-    .getElementById("historicFlightsTrendLineByAirline")
-    .appendChild(historicFlightsTrendLineByAirline);
-
-
-// display(historicAggregatedFlightsByAirline);
-
-// display(mappedHistoricFlights)
-
-// display(historicFlightsTrendLineByAirline)
-
 ```
+
+<div class="grid grid-cols-2">
+<div class="tip" label="About">
+
+[![ETL Flight Data](https://github.com/bradfordjohnson/kchs/actions/workflows/etl-flight-data.yaml/badge.svg)](https://github.com/bradfordjohnson/kchs/actions/workflows/etl-flight-data.yaml)
+[![Deploy dashboard to Pages](https://github.com/bradfordjohnson/kchs/actions/workflows/dashboard-deploy.yml/badge.svg)](https://github.com/bradfordjohnson/kchs/actions/workflows/dashboard-deploy.yml)
+
+Built with Observable Framework, this _work in progress_ dashboard delivers a dynamic view of Charleston International Airport (KCHS) flights, combining JavaScript visuals, data mapping, and a Python ETL pipeline for daily historical snapshots.
+</div>
+
+<div class="warning">
+
+__Historical trend data__ snapshots and __live gate map data__ may contain inaccuracies.
+
+Other live data is pulled directly from an API that powers the official CHS website.
+</div>
+</div>
+
+<div class="grid grid-cols-4" style="grid-auto-rows: auto;">
+  <div class="card">
+    <h2>Scheduled Flights Today</h2>
+    <span class="big" id="totalFlights"></span>
+  </div>
+
+  <div class="card">
+    <h2>Scheduled Arrivals</h2>
+    <span class="big" id="totalArrivals"></span>
+  </div>
+  <div class="card">
+    <h2>Scheduled Departures</h2>
+    <span class="big" id="totalDepartures"></span>
+  </div>
+    <div class="card">
+    <h2>Last Updated</h2>
+    <span class="big" id="lastUpdated"></span>
+  </div>
+</div>
+
+  <div class="card grid-colspan-2">
+    <h2>Live Gate Map</h2>
+    <p>Aircraft currently in their gates.</p>
+    <div id="gate-map"></div>
+  </div>
+
+<div class="grid grid-cols-4" style="grid-auto-rows: auto;">
+  <div class="card grid-colspan-2" style="display: flex; flex-direction: column; gap: 1rem;">
+    <h2>Today's Flights by Type and Airline</h2>
+    <span id="airlinesByFlightType"></span>
+  </div>
+
+  <div class="card grid-colspan-2" style="display: flex; flex-direction: column; gap: 1rem;">
+    <h2>Historic Daily Trends by Flight Type</h2>
+    <span id="historicFlightsTrendLine"></span>
+  </div>
+
+  <div class="card grid-colspan-2">
+    <h2>Today's Arrival Timeliness by Airline</h2>
+    <span id="airlinesArrivalsByTimeliness"></span>
+  </div>
+
+  <div class="card grid-colspan-2">
+    <h2>Today's Departure Timeliness by Airline</h2>
+    <span id="airlinesDeparturesByTimeliness"></span>
+  </div>
+
+</div>
